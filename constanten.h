@@ -13,12 +13,15 @@
 #include <limits>
 #include <ctime>
 
+using namespace std;  // otherwise we would always have to write "std::vector" instead of just "vector"
+
+
 
 // definieren Konstanten
 int L;	// Seitenlaenge des quadratischen Gitters
 double J;	// Kopplungskonstantein Hamiltonian
-double T;	// Temperatur
-double k;		// Boltzmannkonstante -> Temperatur wird in Einheiten von k angegeben
+// double T;	// Temperatur
+// double k;		// Boltzmannkonstante -> Temperatur wird in Einheiten von k angegeben
 double beta; //beta-wert
 
 int sweeps; // Anzahl sweeps, entspricht Anzahl an einzelnen Werten die gemittelt werden
@@ -26,9 +29,10 @@ int drop; // Anzahl an Werten die nicht beruecksichtigt werden, bis System im Eq
 
 int lsqred; //Anzahl der Spins
 
+
 char file1[100]; // char fuer File-Namen
 char file2[100];
-
+ofstream outputfile;
 
 
 
@@ -36,8 +40,6 @@ char file2[100];
 double clusterWahrscheinlichkeit;
 int clustergroesse=0;
 
-
-using namespace std;  // otherwise we would always have to write "std::vector" instead of just "vector"
 
 
 // definieren Vektoren fuer Spin und benachbarte Spins
@@ -85,12 +87,12 @@ void initialisiereKonstanten(int config){
                 continue;
             }
             stringstream zeilenpuffer(zeile);        
-            zeilenpuffer>>L>>J>>T>>k>>sweeps>>drop;
+            zeilenpuffer>>L>>J>>beta>>sweeps>>drop;
             counter++;
 	}
 
 	lsqred=pow(L,2); // berechne die Laenge der vektoren
-        beta=1/(k*T);
+//         beta=1/(k*T);
 	clusterWahrscheinlichkeit=1-exp(-2*J*beta); // berechne die Wahrscheinlichkeit fuer den clusterflip
         
         kWert=2*M_PI/L; // k fuer den improvedEstimator,, um Rechenzeit zu sparen

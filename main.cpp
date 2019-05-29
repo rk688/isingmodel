@@ -34,41 +34,53 @@ int main(){
 	//auto start = chrono::steady_clock::now();
 
 	srand(time(NULL));
-	//printf("%f",random_number());
-	//findeNachbarn();
-
-	initialisiereKonstanten(3);
-	sprintf(file1,"./Messdaten/Magnetisierungswerte.txt"); //schreibe file namen
-	ofstream out_mag(file1,ios::out); //oeffne File
- 	coldStart(); //initialisiere System
+    for(int i=1;i<=1;i++){
+	initialisiereKonstanten(i);
+	sprintf(file1,"./Messdaten/WerteL_%dbeta_%.3f.txt",L,beta); //schreibe file namen
+	ofstream outputfile(file1,ios::out); //oeffne File
+ 	hotStart(); //initialisiere System
 	findeNachbarn();// findet Indizes der benachbarten Spins
 	cout<<"clusterWahrscheinlichkeit: "<<clusterWahrscheinlichkeit<<" // beta: "<<beta<<"\n";
         
         printSpins();
 
 	//METROPOLIS-ALGORITHMUS
-	/*
+	
 	for(int i=0;i<drop;i++){
 			metropolis(); // ein Metropolis-Sweep
 		}
-	for(int i=0;i<sweeps-drop;i++){
-		metropolis(); // ein Metropolis-Sweep
-		out_mag<<mag<<"\n"; // schreibe Magnetisierungswert und File
-		mittelMag=mittelMag+mag;
-	}
-	*/
-
-// 	printSpins();
-	cout<<"\n\n\n";
-	//WOLFF-ALGORITHMUS
-	wolffSweep();
-// 	printSpins();
-	printf("mag: %d\n\n\n\n",mag);
-	cout<<"\n\n\n";
-	//printf("Mittel Magnetisierung: %f\nbeta: %f \nfertig",mittelMag/((sweeps-drop)*lsqred),1/(k*T));
-
-	//printf("Dauer: %f",float( clock () - begin_time )/  std::CLOCKS_PER_SEC);
         
-	out_mag.close(); // schliesse File
+        cout<<"\n\n";
+        printSpins();
+        cout<<"\n\n";
+	for(int j=0;j<2000;j++){
+		/*metropolis();*/// ein Metropolis-Sweep
+                for(int i=0;i<lsqred;i++){// for-schleife um einen Sweep zu bekommen, da zufaellige Spinauswahl genutzt wird
+                    int q=random_number()*lsqred; //zufaelliger Spin wird ausgesucht
+                    double deltaE=2*J*spins[q]*(spins[links[q]]+spins[rechts[q]]+spins[unten[q]]+spins[oben[q]]); // Eneu-Ealt
+                    double boltz=exp(-deltaE*beta);
+                    double w=fmin(1,boltz);
+                    if(random_number()<=w){
+			spins[q]=-spins[q]; // wenn neue zufaellige Nummer kleiner ist als Wahrscheinlickeit w, wird der Spin an der Stelle q geflippt
+			//Messgroessenupdates
+			mag=mag+2*spins[q]; // update die Magnetisierung nach jedem Spinflip
+			
+                    } 
+                }
+		outputfile<<(double) mag/lsqred<<"\n"; // schreibe Magnetisierungswert und File
+// 		mittelMag=mittelMag+mag;
+	}
+	
+	cout<<"\n\n";
+        printSpins();
+// 	//WOLFF-ALGORITHMUS
+//         thermalisieren();
+// 	wolffAlgorithmus();
+//         
+//         
+// 	//printf("Dauer: %f",float( clock () - begin_time )/  std::CLOCKS_PER_SEC);
+        
+	outputfile.close(); // schliesse File
+    }
         return 0;
 }

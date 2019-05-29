@@ -1,4 +1,4 @@
-#Laenge L // Kopplungskonstante J // Temperatur T // Boltzmannkonstante k // sweeps // drop  
-10 1.0 0.1 1.0 10700 1500
-10 1.0 1.0 1.0 10700 1501
-10 1.0 2.0 1.0 1 0
+#Laenge L // Kopplungskonstante J // Beta // sweeps // drop  
+50 1.0  0.4 51500 150000
+50 1.0  0.4 51500 1500
+50 1.0  0.4 51500 1500

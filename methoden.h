@@ -28,7 +28,7 @@ double berechneImprovedEstimator(int position){//berechnen Argument aus improved
 }
 
 void metropolis(){
-	for(int i=0;i<lsqred;i++){// for-schleife um einen Sweep zu bekommen, da zufaellige Spinauswahl genutzt wird
+	for(int i=0;i<1;i++){// for-schleife um einen Sweep zu bekommen, da zufaellige Spinauswahl genutzt wird
 		int q=random_number()*lsqred; //zufaelliger Spin wird ausgesucht
 		double deltaE=2*J*spins[q]*(spins[links[q]]+spins[rechts[q]]+spins[unten[q]]+spins[oben[q]]); // Eneu-Ealt
 		double boltz=exp(-deltaE*beta);
@@ -37,6 +37,7 @@ void metropolis(){
 			spins[q]=-spins[q]; // wenn neue zufaellige Nummer kleiner ist als Wahrscheinlickeit w, wird der Spin an der Stelle q geflippt
 			//Messgroessenupdates
 			mag=mag+2*spins[q]; // update die Magnetisierung nach jedem Spinflip
+			outputfile<<(double) mag/lsqred<<"\n";
 		}
 	}
 }
@@ -60,10 +61,12 @@ void hinzufuegen(int r, int vz){
 	}
 }
 
+
 void wolffSweep(){
 	int geflippteSpins=0;
         int counter=0;
         mittelImprovedEstimator=0;
+        mittelMag=0;
 	while(geflippteSpins<lsqred){//wiederholung so lange bis im mittel L^2 Spins geflippt wurden
                 clustergroesse=1; // =1 fuer den ersten gewaehlten Spin
                 improvedEstimator=0; // setzen Variable vor jeder WolffClusterberechnung auf 0
@@ -77,6 +80,7 @@ void wolffSweep(){
                 
 		//MESSGROESSEN
 		mag=mag-2*clustergroesse*vz;// minus weil altes vz verwendet wird
+		mittelMag+=mag;
 		mittelImprovedEstimator+=improvedEstimator/clustergroesse;// sin cos Summer wird berechnet in jedem Schritt
 		
 		
@@ -90,14 +94,21 @@ void wolffSweep(){
                 }
                 cout<<" // flips insgesamt: "<<counter<<" // Magnetisierung: "<<mag<<"\n\n";
 	}
-	
+	mittelMag=mittelMag/counter;
 	suszeptibilitaet=beta*geflippteSpins/counter; // formel mit G(0) aus Janke
         mittelImprovedEstimator=mittelImprovedEstimator/counter; // mittelwert fuer G(k)
         korrelationslaenge=1/(2*sin(kWert/2))*sqrt(geflippteSpins/counter/mittelImprovedEstimator-1); // Formel Korrelationslaenge
 }
 
 void wolffAlgorithmus(){
-    for(int i;i<sweeps;i++){
+    for(int i;i<sweeps-drop;i++){
+        wolffSweep();
+        outputfile<<mittelMag<<" "<<suszeptibilitaet<<" "<<mittelImprovedEstimator<<" "<<korrelationslaenge<<"\n";
+    }
+}
+
+void thermalisieren(){ // drop wolffSweeps um system zu thermalisieren
+    for(int i=0;i<drop;i++){
         wolffSweep();
     }
 }
