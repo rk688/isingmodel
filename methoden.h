@@ -28,7 +28,7 @@ double berechneImprovedEstimator(int position){//berechnen Argument aus improved
 }
 
 void metropolis(){
-	for(int i=0;i<1;i++){// for-schleife um einen Sweep zu bekommen, da zufaellige Spinauswahl genutzt wird
+	for(int i=0;i<lsqred;i++){// for-schleife um einen Sweep zu bekommen, da zufaellige Spinauswahl genutzt wird
 		int q=random_number()*lsqred; //zufaelliger Spin wird ausgesucht
 		double deltaE=2*J*spins[q]*(spins[links[q]]+spins[rechts[q]]+spins[unten[q]]+spins[oben[q]]); // Eneu-Ealt
 		double boltz=exp(-deltaE*beta);
