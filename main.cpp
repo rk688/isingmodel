@@ -36,7 +36,7 @@ int main(){
 	srand(time(NULL));
     for(int i=1;i<=1;i++){
 	initialisiereKonstanten(i);
-	sprintf(file1,"./Messdaten/METRO_Werte_L_%d_beta_%.3f.txt",L,beta); //schreibe file namen
+	sprintf(file1,"./Messdaten/METRO_Werte_L_%d_beta_%.3f_lsqred.txt",L,beta); //schreibe file namen
 	ofstream outputfile(file1,ios::out); //oeffne File
  	hotStart(); //initialisiere System
 	findeNachbarn();// findet Indizes der benachbarten Spins
@@ -53,7 +53,7 @@ int main(){
         cout<<"\n\n";
         printSpins();
         cout<<"\n\n";
-	for(int j=0;j<2000;j++){
+	for(int j=0;j<20000;j++){
 		/*metropolis();*/// ein Metropolis-Sweep
                 for(int i=0;i<lsqred;i++){// for-schleife um einen Sweep zu bekommen, da zufaellige Spinauswahl genutzt wird
                     int q=random_number()*lsqred; //zufaelliger Spin wird ausgesucht
