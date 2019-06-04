@@ -27,20 +27,31 @@ double berechneImprovedEstimator(int position){//berechnen Argument aus improved
     return pow(cos(arg),2.)+pow(sin(arg),2.); // siehe Formel fuer improvedEstimator
 }
 
-void metropolis(){
-	for(int i=0;i<1;i++){// for-schleife um einen Sweep zu bekommen, da zufaellige Spinauswahl genutzt wird
-		int q=random_number()*lsqred; //zufaelliger Spin wird ausgesucht
-		double deltaE=2*J*spins[q]*(spins[links[q]]+spins[rechts[q]]+spins[unten[q]]+spins[oben[q]]); // Eneu-Ealt
-		double boltz=exp(-deltaE*beta);
-		double w=fmin(1,boltz);
-		if(random_number()<=w){
-			spins[q]=-spins[q]; // wenn neue zufaellige Nummer kleiner ist als Wahrscheinlickeit w, wird der Spin an der Stelle q geflippt
-			//Messgroessenupdates
-			mag=mag+2*spins[q]; // update die Magnetisierung nach jedem Spinflip
-			outputfile<<(double) mag/lsqred<<"\n";
-		}
-	}
+void metropolisflip(){
+    int q=random_number()*lsqred; //zufaelliger Spin wird ausgesucht
+    double deltaE=2*J*spins[q]*(spins[links[q]]+spins[rechts[q]]+spins[unten[q]]+spins[oben[q]]); // Eneu-Ealt
+    double boltz=exp(-deltaE*beta);
+    double w=fmin(1,boltz);
+    if(random_number()<=w){
+        spins[q]=-spins[q]; // wenn neue zufaellige Nummer kleiner ist als Wahrscheinlickeit w, wird der Spin an der Stelle q geflippt
+        //Messgroessenupdates
+        mag=mag+2*spins[q]; // update die Magnetisierung nach jedem Spinflip
+    }
 }
+
+void metropolis(){
+	for(int i=0;i<lsqred;i++){// for-schleife um einen Sweep zu bekommen, da zufaellige Spinauswahl genutzt wird
+            metropolisflip();            
+        }
+        outputfile<<(double) mag/lsqred<<"\n";
+}
+
+void thermalisierenMETRO(int wiederholungen){
+    for(int i=0;i<wiederholungen;i++){
+        metropolisflip();
+    }
+}
+
 
 void hinzufuegen(int r, int vz);
 

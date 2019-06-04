@@ -16,7 +16,7 @@ int main(){
     char filename[100];
 //     cout<<"Filname eingeben:\t";
 //     cin>>filename;
-    ifstream datei("./Messdaten/METRO_Werte_L_50_beta_0.400_lsqred.txt"); // Messdaten aus Metropolisalgorithmus
+    ifstream datei("./Messdaten/METRO_Werte_L_50_beta_0.500_lsqred.txt"); // Messdaten aus Metropolisalgorithmus
     string zeile;
     int counter=0, order=2000;
     double a,mm=0,mm2=0;
