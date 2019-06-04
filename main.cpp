@@ -36,7 +36,7 @@ int main(){
 	srand(time(NULL));
     for(int i=1;i<=1;i++){
 	initialisiereKonstanten(i);
-	sprintf(file1,"./Messdaten/WerteL_%dbeta_%.3f.txt",L,beta); //schreibe file namen
+	sprintf(file1,"./Messdaten/METRO_Werte_L_%d_beta_%.3f.txt",L,beta); //schreibe file namen
 	ofstream outputfile(file1,ios::out); //oeffne File
  	hotStart(); //initialisiere System
 	findeNachbarn();// findet Indizes der benachbarten Spins
