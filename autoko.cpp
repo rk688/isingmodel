@@ -16,9 +16,9 @@ int main(){
     char filename[100];
 //     cout<<"Filname eingeben:\t";
 //     cin>>filename;
-    ifstream datei("./Messdaten/METRO_Werte_L_50_beta_0.400.txt"); // Messdaten aus Metropolisalgorithmus
+    ifstream datei("./Messdaten/METRO_Werte_L_50_beta_0.500_lsqred.txt"); // Messdaten aus Metropolisalgorithmus
     string zeile;
-    int counter=0, order=200;
+    int counter=0, order=2000;
     double a,mm=0,mm2=0;
     vector<double> x; // vector fuer alle Messwerte
     ofstream outputfile("./Messdaten/Autokorrelationdaten.txt",ios::out); //oeffne File
@@ -32,12 +32,8 @@ int main(){
         zeilenpuffer>>a;
         x.push_back(a);
         counter++;
-//         mm+=a; // addieren Magnetisierungen auf fuer einen Mittelwert
-//         mm2+=a*a; //addieren quadratische Magnetisierungswerte
 	}
-//     mm=mm/counter; //bilden Mittelwert der Magnetisierung
-//     mm2=mm2/counter;// bilden Mittelwert der quadratischen Magnetisierung
-    
+
 //     bilden Autokorrelation analog zur Formel 4.62/S.103 und unter 4.57/S. 102 im Text aus Janke:
 //     A(k)=<A_i*A_i+1>-<A_i><A_i+k>/<A_1^2>-<A_i>^2
 //     (order=k im Code)
@@ -54,21 +50,6 @@ int main(){
         outputfile<<zaehler/nenner<<"\n"; //kuerzen einmal 1/(counter-i)!
     }
     
-	
-//     for(int i=0;i<order;i++){
-//         cout<<x[i]<<"\n";
-//         double sum=0;
-//         double sum1=0;
-//         double sum2=0;
-//         double sum3=0;
-//         for(int j=0;j<(order-i);j++){
-//             sum+=x[j]*x[j+i];
-//             sum1+=x[j];
-//             sum2+=x[j+i];
-//             sum3+=x[j]*x[j];
-//         }
-//         outputfile<<fabs((sum-sum1*sum2/(order-i))/(sum3-sum1*sum1/(order-i)))<<"\n";
-//     }
     outputfile.close();
     cout<<counter<<" done\n";
     return 0;

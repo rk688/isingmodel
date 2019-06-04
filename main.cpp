@@ -37,6 +37,7 @@ int main(){
     for(int i=1;i<=1;i++){
 	initialisiereKonstanten(i);
 	sprintf(file1,"./Messdaten/METRO_Werte_L_%d_beta_%.3f.txt",L,beta); //schreibe file namen
+
 	outputfile.open(file1,ios::out); //oeffne File
  	hotStart(); //initialisiere System
 	findeNachbarn();// findet Indizes der benachbarten Spins
@@ -45,33 +46,18 @@ int main(){
         printSpins();
 
 	//METROPOLIS-ALGORITHMUS
-	
-	for(int i=0;i<drop;i++){
-			metropolis(); // ein Metropolis-Sweep
-		}
+	cout<<"\n\nstarte thermlisierung\n\n";
+	thermalisierenMETRO(drop); //thermalisieren System mit drop flips
         
-        cout<<"\n\n";
-//         printSpins();
-//         cout<<"\n\n";
-// 	for(int j=0;j<2000;j++){
-// 		/*metropolis();*/// ein Metropolis-Sweep
-//                 for(int i=0;i<lsqred;i++){// for-schleife um einen Sweep zu bekommen, da zufaellige Spinauswahl genutzt wird
-//                     int q=random_number()*lsqred; //zufaelliger Spin wird ausgesucht
-//                     double deltaE=2*J*spins[q]*(spins[links[q]]+spins[rechts[q]]+spins[unten[q]]+spins[oben[q]]); // Eneu-Ealt
-//                     double boltz=exp(-deltaE*beta);
-//                     double w=fmin(1,boltz);
-//                     if(random_number()<=w){
-// 			spins[q]=-spins[q]; // wenn neue zufaellige Nummer kleiner ist als Wahrscheinlickeit w, wird der Spin an der Stelle q geflippt
-// 			//Messgroessenupdates
-// 			mag=mag+2*spins[q]; // update die Magnetisierung nach jedem Spinflip
-// 			
-//                     } 
-//                 }
-// 		outputfile<<(double) mag/lsqred<<"\n"; // schreibe Magnetisierungswert und File
-// // 		mittelMag=mittelMag+mag;
-// 	}
+        cout<<"thermalisiert\n\n";
+        printSpins();
+        cout<<"\n\nstarte Metropolisalgorithmus\n\n";
+        
+	for(int j=0;j<sweeps;j++){ //eigentlicher Metropolisalgorithmus
+            metropolis();
+	}
 	
-	cout<<"\n\n";
+	cout<<"beende Metro\n\n";
         printSpins();
 // 	//WOLFF-ALGORITHMUS
 //         thermalisieren();
