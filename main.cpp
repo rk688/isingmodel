@@ -34,19 +34,18 @@ int main(){
 	//auto start = chrono::steady_clock::now();
         
 	srand(time(NULL));
-        int number_of_configurations;
-        cout<<"Anzahl an Konfigurationen : ";
-        cin>>number_of_configurations;
+        int number_of_configurations = leseStartfile(0,startfilename) -1; // berechne Anzahl an configurationen
+        cout<<"Anzahl an Konfigurationen : "<<number_of_configurations<<"\n\n";
     for(int i=1;i<=number_of_configurations;i++){
         cout<<"Lade Konfiguration "<<i<<" : ";
 	initialisiereKonstanten(i);
-        cout<<L<<" "<<beta<<" "<<sweeps<<"\n";
-	sprintf(file1,"./Messdaten/WOLFF_Werte_L_%d_beta_%.3f_lsqred.txt",L,beta); //schreibe file namen
+        cout<<"L:"<<L<<" / beta:"<<beta<<" / sweeps:"<<sweeps<<"\n";
+	sprintf(file1,"./Messdaten/WOLFF_Werte_L_%d_beta_%.3f_sweeps_%d_lsqred.txt",L,beta,sweeps); //schreibe file namen
 
 	outputfile.open(file1,ios::out); //oeffne File
- 	hotStart(); //initialisiere System
+ 	coldStart(); //initialisiere System
 	findeNachbarn();// findet Indizes der benachbarten Spins
-	cout<<"clusterWahrscheinlichkeit: "<<clusterWahrscheinlichkeit<<" // beta: "<<beta<<"\n";
+	cout<<"clusterWahrscheinlichkeit: "<<clusterWahrscheinlichkeit<<"\n";
         
 //         printSpins();
 
@@ -70,7 +69,7 @@ int main(){
         cout<<"done\n";
         cout<<"starte Wolffalgorithmus ... ";
 	wolffAlgorithmus();
-	cout<<"done\n";
+	cout<<"done\n\n";
 //         
 //         
 // 	//printf("Dauer: %f",float( clock () - begin_time )/  std::CLOCKS_PER_SEC);

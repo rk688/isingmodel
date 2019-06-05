@@ -31,7 +31,8 @@ int main(){
     
     
     while(getline(datei,zeile)){
-        if(zeile[0]=='#'){ // in der Datei sollten keine Zeilen it # sein...                counter++;
+        if(zeile[0]=='#'){ // in der Datei sollten keine Zeilen it # sein...                
+                counter++;
                 continue;
         }
         stringstream zeilenpuffer(zeile);        

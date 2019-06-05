@@ -32,6 +32,7 @@ int lsqred; //Anzahl der Spins
 
 char file1[100]; // char fuer File-Namen
 char file2[100];
+const char * startfilename={"./Startparameter.txt"};
 ofstream outputfile;
 
 
@@ -73,9 +74,9 @@ void initialisiereVektoren(int laenge){
     links=linksNeu;
 }
 
-void leseStartfile(int config){
+int leseStartfile(int config,const char* filename){
     //Einlesen der Werte aus "parameter.txt"
-	ifstream datei("./Startparameter.txt");
+	ifstream datei(filename);
 	string zeile;
         int counter=0;
         
@@ -88,12 +89,13 @@ void leseStartfile(int config){
             zeilenpuffer>>L>>J>>beta>>sweeps>>drop;
             counter++;
 	}
+	return counter;
 }
 
 
 void initialisiereKonstanten(int config){
-
-	leseStartfile(config);
+    
+	leseStartfile(config, startfilename);
 
 	lsqred=pow(L,2); // berechne die Laenge der vektoren
 //         beta=1/(k*T);

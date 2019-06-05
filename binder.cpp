@@ -14,26 +14,19 @@
 using namespace std;  // otherwise we would always have to write "std::vector" instead of just "vector"
 
 int main(){
-    int number_of_configurations;
-        cout<<"Anzahl an Konfigurationen : ";
-        cin>>number_of_configurations;
-        sprintf(file2,"./Messdaten/Binderkumulanten.txt");
-        outputfile.open(file2,ios::out); //oeffne File
-        outputfile<<"# beta // kumulante // L\n";
+    int number_of_configurations = leseStartfile(0,startfilename) -1; // berechne anzahl der configurationen
+    cout<<"Anzahl an Konfigurationen : "<<number_of_configurations<<"\n";
+    sprintf(file2,"./Messdaten/Binderkumulanten.txt");
+    outputfile.open(file2,ios::out); //oeffne File
+    outputfile<<"# beta // kumulante // L\n"; // schreibe groessen an den anfang des files
     for(int i=1;i<=number_of_configurations;i++){
-        leseStartfile(i);
+        leseStartfile(i,startfilename);
         sprintf(file1,"./Messdaten/WOLFF_Werte_L_%d_beta_%.3f_lsqred.txt",L,beta);
         ifstream datei(file1); // Messdaten aus Metropolisalgorithmus
         string zeile;
         int counter=0;
         double a;
         vector<double> x; // vector fuer alle Messwerte
-    
-//         // zum einfuegen in den Messwertfilenamen
-//         string bsp = filename; 
-//         bsp.insert(12,"BinderDaten_");    
-//         const char* outputfilename=bsp.c_str();
-    
         // lesen Daten aus Wertetabelle ein
         while(getline(datei,zeile)){
             if(zeile[0]=='#'){ // in der Datei sollten keine Zeilen it # sein...
