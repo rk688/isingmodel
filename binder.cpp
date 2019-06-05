@@ -21,7 +21,7 @@ int main(){
     outputfile<<"# beta // kumulante // L\n"; // schreibe groessen an den anfang des files
     for(int i=1;i<=number_of_configurations;i++){
         leseStartfile(i,startfilename);
-        sprintf(file1,"./Messdaten/WOLFF_Werte_L_%d_beta_%.3f_lsqred.txt",L,beta);
+        sprintf(file1,"./Messdaten/WOLFF_Werte_L_%d_beta_%.3f_sweeps_%d_drops_%d.txt",L,beta,sweeps,drop);
         ifstream datei(file1); // Messdaten aus Metropolisalgorithmus
         string zeile;
         int counter=0;

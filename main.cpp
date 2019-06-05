@@ -40,7 +40,7 @@ int main(){
         cout<<"Lade Konfiguration "<<i<<" : ";
 	initialisiereKonstanten(i);
         cout<<"L:"<<L<<" / beta:"<<beta<<" / sweeps:"<<sweeps<<"\n";
-	sprintf(file1,"./Messdaten/WOLFF_Werte_L_%d_beta_%.3f_sweeps_%d_lsqred.txt",L,beta,sweeps); //schreibe file namen
+	sprintf(file1,"./Messdaten/WOLFF_Werte_L_%d_beta_%.3f_sweeps_%d_drops_%d.txt",L,beta,sweeps,drop); //schreibe file namen
 
 	outputfile.open(file1,ios::out); //oeffne File
  	coldStart(); //initialisiere System
