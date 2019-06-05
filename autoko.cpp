@@ -14,14 +14,22 @@ using namespace std;  // otherwise we would always have to write "std::vector" i
 
 int main(){
     char filename[100];
-//     cout<<"Filname eingeben:\t";
-//     cin>>filename;
-    ifstream datei("./Messdaten/METRO_Werte_L_50_beta_0.500_lsqred.txt"); // Messdaten aus Metropolisalgorithmus
+    cout<<"Filname eingeben:\t";
+    cin>>filename;
+    ifstream datei(filename); // Messdaten aus Metropolisalgorithmus
     string zeile;
     int counter=0, order=2000;
     double a,mm=0,mm2=0;
     vector<double> x; // vector fuer alle Messwerte
-    ofstream outputfile("./Messdaten/Autokorrelationdaten.txt",ios::out); //oeffne File
+    
+    
+    string bsp = filename;
+    bsp.insert(12,"AutokoDaten_");
+    cout<<bsp<<"\n";
+    
+    const char* outputfilename=bsp.c_str();
+    cout<<outputfilename<<"\n";
+    ofstream outputfile(outputfilename,ios::out); //oeffne File
         
     while(getline(datei,zeile)){
         if(zeile[0]=='#'){ // in der Datei sollten keine Zeilen it # sein...

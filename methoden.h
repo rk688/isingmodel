@@ -40,7 +40,7 @@ void metropolisflip(){
 }
 
 void metropolis(){
-	for(int i=0;i<lsqred;i++){// for-schleife um einen Sweep zu bekommen, da zufaellige Spinauswahl genutzt wird
+	for(int i=0;i<1;i++){// for-schleife um einen Sweep zu bekommen, da zufaellige Spinauswahl genutzt wird
             metropolisflip();            
         }
         outputfile<<(double) mag/lsqred<<"\n";

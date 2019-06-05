@@ -34,31 +34,33 @@ int main(){
 	//auto start = chrono::steady_clock::now();
 
 	srand(time(NULL));
-    for(int i=1;i<=1;i++){
+    for(int i=1;i<=3;i++){
+        cout<<"Lade Konfiguration "<<i<<" : ";
 	initialisiereKonstanten(i);
-	sprintf(file1,"./Messdaten/METRO_Werte_L_%d_beta_%.3f.txt",L,beta); //schreibe file namen
+        cout<<L<<" "<<beta<<" "<<sweeps<<"\n";
+	sprintf(file1,"./Messdaten/METRO_Werte_L_%d_beta_%.3f_jederWert.txt",L,beta); //schreibe file namen
 
 	outputfile.open(file1,ios::out); //oeffne File
  	hotStart(); //initialisiere System
 	findeNachbarn();// findet Indizes der benachbarten Spins
 	cout<<"clusterWahrscheinlichkeit: "<<clusterWahrscheinlichkeit<<" // beta: "<<beta<<"\n";
         
-        printSpins();
+//         printSpins();
 
 	//METROPOLIS-ALGORITHMUS
-	cout<<"\n\nstarte thermlisierung\n\n";
+	cout<<"thermlisieren ... ";
 	thermalisierenMETRO(drop); //thermalisieren System mit drop flips
         
-        cout<<"thermalisiert\n\n";
-        printSpins();
-        cout<<"\n\nstarte Metropolisalgorithmus\n\n";
+        cout<<"done\n";
+//         printSpins();
+        cout<<"starte Metropolisalgorithmus ... ";
         
 	for(int j=0;j<sweeps;j++){ //eigentlicher Metropolisalgorithmus
             metropolis();
 	}
 	
-	cout<<"beende Metro\n\n";
-        printSpins();
+	cout<<"done\n";
+//         printSpins();
 // 	//WOLFF-ALGORITHMUS
 //         thermalisieren();
 // 	wolffAlgorithmus();
