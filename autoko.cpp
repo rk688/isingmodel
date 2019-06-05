@@ -22,15 +22,14 @@ int main(){
     double a,mm=0,mm2=0;
     vector<double> x; // vector fuer alle Messwerte
     
-    
-    string bsp = filename;
-    bsp.insert(12,"AutokoDaten_");
-    cout<<bsp<<"\n";
-    
+    // zum einfuegen in den Messwertfilenamen
+    string bsp = filename; 
+    bsp.insert(12,"AutokoDaten_");    
     const char* outputfilename=bsp.c_str();
-    cout<<outputfilename<<"\n";
     ofstream outputfile(outputfilename,ios::out); //oeffne File
         
+    
+    
     while(getline(datei,zeile)){
         if(zeile[0]=='#'){ // in der Datei sollten keine Zeilen it # sein...
                 counter++;

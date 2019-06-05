@@ -40,7 +40,7 @@ void metropolisflip(){
 }
 
 void metropolis(){
-	for(int i=0;i<1;i++){// for-schleife um einen Sweep zu bekommen, da zufaellige Spinauswahl genutzt wird
+	for(int i=0;i<lsqred;i++){// for-schleife um einen Sweep zu bekommen, da zufaellige Spinauswahl genutzt wird
             metropolisflip();            
         }
         outputfile<<(double) mag/lsqred<<"\n";
@@ -94,7 +94,7 @@ void wolffSweep(){
 		mittelMag+=mag;
 		mittelImprovedEstimator+=improvedEstimator/clustergroesse;// sin cos Summer wird berechnet in jedem Schritt
 		
-		
+		/*
 		printSpins();
                 cout<<"clustergr.: "<<clustergroesse;
                 if(vz==1){
@@ -103,23 +103,23 @@ void wolffSweep(){
                 else{
                     cout<<" (+)";
                 }
-                cout<<" // flips insgesamt: "<<counter<<" // Magnetisierung: "<<mag<<"\n\n";
+                cout<<" // flips insgesamt: "<<counter<<" // Magnetisierung: "<<mag<<"\n\n";*/
 	}
 	mittelMag=mittelMag/counter;
-	suszeptibilitaet=beta*geflippteSpins/counter; // formel mit G(0) aus Janke
-        mittelImprovedEstimator=mittelImprovedEstimator/counter; // mittelwert fuer G(k)
-        korrelationslaenge=1/(2*sin(kWert/2))*sqrt(geflippteSpins/counter/mittelImprovedEstimator-1); // Formel Korrelationslaenge
+// 	suszeptibilitaet=beta*geflippteSpins/counter; // formel mit G(0) aus Janke
+//         mittelImprovedEstimator=mittelImprovedEstimator/counter; // mittelwert fuer G(k)
+//         korrelationslaenge=1/(2*sin(kWert/2))*sqrt(geflippteSpins/counter/mittelImprovedEstimator-1); // Formel Korrelationslaenge
 }
 
 void wolffAlgorithmus(){
-    for(int i;i<sweeps-drop;i++){
+    for(int i=0;i<sweeps;i++){
         wolffSweep();
-        outputfile<<mittelMag<<" "<<suszeptibilitaet<<" "<<mittelImprovedEstimator<<" "<<korrelationslaenge<<"\n";
+        outputfile<<mittelMag<<"\n";//<<" "<<suszeptibilitaet<<" "<<mittelImprovedEstimator<<" "<<korrelationslaenge<<"\n";
     }
 }
 
-void thermalisieren(){ // drop wolffSweeps um system zu thermalisieren
-    for(int i=0;i<drop;i++){
+void thermalisierenWOLFF(int wiederholungen){ // drop wolffSweeps um system zu thermalisieren
+    for(int i=0;i<wiederholungen;i++){
         wolffSweep();
     }
 }

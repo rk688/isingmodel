@@ -38,7 +38,7 @@ int main(){
         cout<<"Lade Konfiguration "<<i<<" : ";
 	initialisiereKonstanten(i);
         cout<<L<<" "<<beta<<" "<<sweeps<<"\n";
-	sprintf(file1,"./Messdaten/METRO_Werte_L_%d_beta_%.3f_jederWert.txt",L,beta); //schreibe file namen
+	sprintf(file1,"./Messdaten/WOLFF_Werte_L_%d_beta_%.3f_lsqred.txt",L,beta); //schreibe file namen
 
 	outputfile.open(file1,ios::out); //oeffne File
  	hotStart(); //initialisiere System
@@ -47,23 +47,27 @@ int main(){
         
 //         printSpins();
 
-	//METROPOLIS-ALGORITHMUS
-	cout<<"thermlisieren ... ";
-	thermalisierenMETRO(drop); //thermalisieren System mit drop flips
-        
-        cout<<"done\n";
-//         printSpins();
-        cout<<"starte Metropolisalgorithmus ... ";
-        
-	for(int j=0;j<sweeps;j++){ //eigentlicher Metropolisalgorithmus
-            metropolis();
-	}
-	
-	cout<<"done\n";
+// 	//METROPOLIS-ALGORITHMUS
+// 	cout<<"thermlisieren ... ";
+// 	thermalisierenMETRO(drop); //thermalisieren System mit drop flips
+//         
+//         cout<<"done\n";
+// //         printSpins();
+//         cout<<"starte Metropolisalgorithmus ... ";
+//         
+// 	for(int j=0;j<sweeps;j++){ //eigentlicher Metropolisalgorithmus
+//             metropolis();
+// 	}
+// 	
+// 	cout<<"done\n";
 //         printSpins();
 // 	//WOLFF-ALGORITHMUS
-//         thermalisieren();
-// 	wolffAlgorithmus();
+        cout<<"thermlisieren ... ";
+	thermalisierenWOLFF(drop); //thermalisieren System mit drop flips
+        cout<<"done\n";
+        cout<<"starte Wolffalgorithmus ... ";
+	wolffAlgorithmus();
+	cout<<"done\n";
 //         
 //         
 // 	//printf("Dauer: %f",float( clock () - begin_time )/  std::CLOCKS_PER_SEC);
