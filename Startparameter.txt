@@ -1,4 +1,8 @@
-#Laenge L // Kopplungskonstante J // Beta // sweeps // drop  
-50 1.0  0.1 2000 20000
-50 1.0  0.44 2000 20000
-50 1.0  2 2000 20000
+#Laenge L // Kopplungskonstante J // Beta // sweeps // drop
+50 1.0  0.1 2000 0
+50 1.0  0.1 2000 0
+50 1.0  0.1 2000 0
+50 1.0  0.1 2000 0
+50 1.0  0.1 2000 0
+50 1.0  0.1 2000 0
+

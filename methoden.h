@@ -91,8 +91,8 @@ void wolffSweep(){
                 
 		//MESSGROESSEN
 		mag=mag-2*clustergroesse*vz;// minus weil altes vz verwendet wird
-		mittelMag+=mag;
-		mittelImprovedEstimator+=improvedEstimator/clustergroesse;// sin cos Summer wird berechnet in jedem Schritt
+// 		mittelMag+=mag;
+// 		mittelImprovedEstimator+=improvedEstimator/clustergroesse;// sin cos Summer wird berechnet in jedem Schritt
 		
 		/*
 		printSpins();
@@ -105,7 +105,7 @@ void wolffSweep(){
                 }
                 cout<<" // flips insgesamt: "<<counter<<" // Magnetisierung: "<<mag<<"\n\n";*/
 	}
-	mittelMag=mittelMag/counter;
+// 	mittelMag=mittelMag/counter;
 // 	suszeptibilitaet=beta*geflippteSpins/counter; // formel mit G(0) aus Janke
 //         mittelImprovedEstimator=mittelImprovedEstimator/counter; // mittelwert fuer G(k)
 //         korrelationslaenge=1/(2*sin(kWert/2))*sqrt(geflippteSpins/counter/mittelImprovedEstimator-1); // Formel Korrelationslaenge
@@ -114,7 +114,7 @@ void wolffSweep(){
 void wolffAlgorithmus(){
     for(int i=0;i<sweeps;i++){
         wolffSweep();
-        outputfile<<mittelMag<<"\n";//<<" "<<suszeptibilitaet<<" "<<mittelImprovedEstimator<<" "<<korrelationslaenge<<"\n";
+        outputfile<<mag<<"\n";//<<" "<<suszeptibilitaet<<" "<<mittelImprovedEstimator<<" "<<korrelationslaenge<<"\n";
     }
 }
 

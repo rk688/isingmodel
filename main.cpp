@@ -32,9 +32,12 @@ int main(){
 
 	//const clock_t begin_time = clock(); // Startzeit des Programms
 	//auto start = chrono::steady_clock::now();
-
+        
 	srand(time(NULL));
-    for(int i=1;i<=3;i++){
+        int number_of_configurations;
+        cout<<"Anzahl an Konfigurationen : ";
+        cin>>number_of_configurations;
+    for(int i=1;i<=number_of_configurations;i++){
         cout<<"Lade Konfiguration "<<i<<" : ";
 	initialisiereKonstanten(i);
         cout<<L<<" "<<beta<<" "<<sweeps<<"\n";

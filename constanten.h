@@ -73,10 +73,8 @@ void initialisiereVektoren(int laenge){
     links=linksNeu;
 }
 
-
-void initialisiereKonstanten(int config){
-
-	//Einlesen der Werte aus "parameter.txt"
+void leseStartfile(int config){
+    //Einlesen der Werte aus "parameter.txt"
 	ifstream datei("./Startparameter.txt");
 	string zeile;
         int counter=0;
@@ -90,6 +88,12 @@ void initialisiereKonstanten(int config){
             zeilenpuffer>>L>>J>>beta>>sweeps>>drop;
             counter++;
 	}
+}
+
+
+void initialisiereKonstanten(int config){
+
+	leseStartfile(config);
 
 	lsqred=pow(L,2); // berechne die Laenge der vektoren
 //         beta=1/(k*T);

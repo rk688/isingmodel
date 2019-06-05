@@ -2,7 +2,10 @@ run: isingmodel.x
 	./isingmodel.x;
 	./autoko.x;
 
-all: isingmodel.x autoko.x
+all: isingmodel.x autoko.x binder.x
+
+binder.x: binder.cpp constanten.h
+	g++ binder.cpp -o binder.x;
 
 isingmodel.x: main.cpp *.h
 	g++ main.cpp -o isingmodel.x;
