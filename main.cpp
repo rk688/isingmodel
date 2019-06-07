@@ -37,7 +37,7 @@ int main(){
         int number_of_configurations = leseStartfile(0,startfilename) -1; // berechne Anzahl an configurationen
         cout<<"Anzahl an Konfigurationen : "<<number_of_configurations<<"\n\n";
     for(int i=1;i<=number_of_configurations;i++){
-        cout<<"Lade Konfiguration "<<i<<" : ";
+        cout<<"Lade Konfiguration "<<i<<" / "<<number_of_configurations<<" : ";
 	initialisiereKonstanten(i);
         cout<<"L:"<<L<<" / beta:"<<beta<<" / sweeps:"<<sweeps<<"\n";
 	sprintf(file1,"./Messdaten/WOLFF_Werte_L_%d_beta_%.3f_sweeps_%d_drops_%d.txt",L,beta,sweeps,drop); //schreibe file namen

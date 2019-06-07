@@ -18,8 +18,8 @@ int main(){
     outputfile<<"#Laenge L // Kopplungskonstante J // Beta // sweeps // drop\n";
     int Ls[]={10,50,100,150,200,250,300,350,400,450,500};
     double betaStart=0.437, betaEnde=0.447, deltaBeta=0.001;
-    sweeps=1;
-    drop=1;
+    sweeps=40000;
+    drop=1000;
     
     int counter=sizeof(Ls)/sizeof(Ls[0]);
     

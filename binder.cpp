@@ -18,7 +18,7 @@ int main(){
     cout<<"Anzahl an Konfigurationen : "<<number_of_configurations<<"\n";
     sprintf(file2,"./Messdaten/Binderkumulanten.txt");
     outputfile.open(file2,ios::out); //oeffne File
-    outputfile<<"# beta // kumulante // L\n"; // schreibe groessen an den anfang des files
+    outputfile<<"# beta // kumulante U  // L\n"; // schreibe groessen an den anfang des files
     for(int i=1;i<=number_of_configurations;i++){
         leseStartfile(i,startfilename);
         sprintf(file1,"./Messdaten/WOLFF_Werte_L_%d_beta_%.3f_sweeps_%d_drops_%d.txt",L,beta,sweeps,drop);
