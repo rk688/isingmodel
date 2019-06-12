@@ -114,7 +114,7 @@ void wolffSweep(){
 void wolffAlgorithmus(){
     for(int i=0;i<sweeps;i++){
         wolffSweep();
-        outputfile<<mag<<"\n";//<<" "<<suszeptibilitaet<<" "<<mittelImprovedEstimator<<" "<<korrelationslaenge<<"\n";
+        outputfile<<mag/lsqred<<"\n";//<<" "<<suszeptibilitaet<<" "<<mittelImprovedEstimator<<" "<<korrelationslaenge<<"\n";
     }
 }
 

@@ -10,8 +10,11 @@
 #include <limits>
 #include <ctime>
 #include "constanten.h"
+#include "analyse.h"
 
 using namespace std;  // otherwise we would always have to write "std::vector" instead of just "vector"
+
+// vector<double> binnedjackknife;
 
 int main(){
     int number_of_configurations = leseStartfile(0,startfilename) -1; // berechne anzahl der configurationen
@@ -19,43 +22,54 @@ int main(){
     sprintf(file2,"./Messdaten/Binderkumulanten.txt");
     outputfile.open(file2,ios::out); //oeffne File
     outputfile<<"# beta // kumulante U  // L\n"; // schreibe groessen an den anfang des files
+    
+    double a,b; // dumyvariable zum einlesen der Werte
+    vector<double> mag2;
+    vector<double> mag4;
+    int binGroesse=10;
+    vector<double> resultsmm2(2);
+    vector<double> resutlsmm4(2);
+         
     for(int i=1;i<=number_of_configurations;i++){
         leseStartfile(i,startfilename);
         sprintf(file1,"./Messdaten/WOLFF_Werte_L_%d_beta_%.3f_sweeps_%d_drops_%d.txt",L,beta,sweeps,drop);
+        lsqred=L*L;
         ifstream datei(file1); // Messdaten aus Metropolisalgorithmus
         string zeile;
         int counter=0;
-        double a;
-        vector<double> x; // vector fuer alle Messwerte
         // lesen Daten aus Wertetabelle ein
         while(getline(datei,zeile)){
-            if(zeile[0]=='#'){ // in der Datei sollten keine Zeilen it # sein...
-                counter++;
-                continue;
-            }
             stringstream zeilenpuffer(zeile);        
-            zeilenpuffer>>a;
-            x.push_back(a);
+            zeilenpuffer>>b;
+            a=b/lsqred;// um mag-werte zu mitteln
+            mag2.push_back(a*a);
+            mag4.push_back(pow(a,4.));
             counter++;
 	}
 	
+	resultsmm2=binnedjackknife(binGroesse,mag2);
+        resutlsmm4=binnedjackknife(binGroesse,mag4);
 	
 //     BINDERKUMULANTE 4. ORDNUNG
 //     nach Formel 4.95 Janke S115
 //     U(beta)=1-<mag^4>/3/<mag^2>^2
-
-        double mag2=0,mag4=0, sum=0; // quadratische und hoch 4 Magnetisierungswerte
-        for(int i=0;i<counter;i++){
-            sum=x[i]*x[i];
-            mag2+=sum;
-            mag4+=sum*sum;
-        }
+        
+        
+        
+        
+// //         HIER NOCH OHNE BINNEDJACKKNIF
+//         double mag2=0,mag4=0, sum=0; // quadratische und hoch 4 Magnetisierungswerte
+//         for(int i=0;i<counter;i++){
+//             sum=x[i]*x[i];
+//             mag2+=sum;
+//             mag4+=sum*sum;
+//         }
     
     
-        double zaehler=mag4*counter;
-        double nenner=mag2*mag2*3;
+        double zaehler=resutlsmm4[0];
+        double nenner=resultsmm2[0]*resultsmm2[0]*3;
 //         cout<<"BINDERKUMULANTE: "<<1.-zaehler/nenner<<"\n";
-        outputfile<<beta<<"\t"<<(double) 1.-zaehler/nenner<<"\t"<<L<<"\n"; //kuerzen einmal 1/(counter-i)!
+        outputfile<<beta<<"\t"<<(double) 1.-zaehler/nenner<<"\t"<<L<<"\n";
     }
     outputfile.close();
     cout<<"... done\n";
