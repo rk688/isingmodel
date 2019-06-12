@@ -9,6 +9,7 @@
 #include <cmath>
 #include <limits>
 #include <ctime>
+#include <iomanip>
 #include "constanten.h"
 #include "analyse.h"
 
@@ -24,8 +25,7 @@ int main(){
     outputfile<<"# beta // kumulante U  // L\n"; // schreibe groessen an den anfang des files
     
     double a,b; // dumyvariable zum einlesen der Werte
-    vector<double> mag2;
-    vector<double> mag4;
+    
     int binGroesse=10;
     vector<double> resultsmm2(2);
     vector<double> resutlsmm4(2);
@@ -34,6 +34,10 @@ int main(){
         leseStartfile(i,startfilename);
         sprintf(file1,"./Messdaten/WOLFF_Werte_L_%d_beta_%.3f_sweeps_%d_drops_%d.txt",L,beta,sweeps,drop);
         lsqred=L*L;
+        
+        vector<double> mag2(sweeps);
+        vector<double> mag4(sweeps);
+        
         ifstream datei(file1); // Messdaten aus Metropolisalgorithmus
         string zeile;
         int counter=0;
@@ -42,8 +46,8 @@ int main(){
             stringstream zeilenpuffer(zeile);        
             zeilenpuffer>>b;
             a=b/lsqred;// um mag-werte zu mitteln
-            mag2.push_back(a*a);
-            mag4.push_back(pow(a,4.));
+            mag2[counter]=(a*a);
+            mag4[counter]=pow(a,4.);
             counter++;
 	}
 	
@@ -69,7 +73,7 @@ int main(){
         double zaehler=resutlsmm4[0];
         double nenner=resultsmm2[0]*resultsmm2[0]*3;
 //         cout<<"BINDERKUMULANTE: "<<1.-zaehler/nenner<<"\n";
-        outputfile<<beta<<"\t"<<(double) 1.-zaehler/nenner<<"\t"<<L<<"\n";
+        outputfile<<std::fixed << std::setprecision(10)<<beta<<"\t"<<(double) 1.-zaehler/nenner<<"\t"<<L<<"\n";
     }
     outputfile.close();
     cout<<"... done\n";
