@@ -20,6 +20,7 @@
 #include <cmath>
 #include <limits>
 #include <ctime>
+#include <sys/resource.h> // vergroessert rekursionstiefe bei rekursivem programmieren
 #include "gitter.h"
 #include "constanten.h"
 #include "methoden.h"
@@ -34,6 +35,12 @@ int main(){
 	//auto start = chrono::steady_clock::now();
         
 	srand(time(NULL));
+        
+        rlimit R;                   // aendert max rekursionstiefe
+        getrlimit(RLIMIT_STACK, &R);
+        R.rlim_cur = R.rlim_max;
+        setrlimit(RLIMIT_STACK, &R);
+        
         int number_of_configurations = leseStartfile(0,startfilename) -1; // berechne Anzahl an configurationen
         cout<<"Anzahl an Konfigurationen : "<<number_of_configurations<<"\n\n";
     for(int i=1;i<=number_of_configurations;i++){
@@ -43,7 +50,8 @@ int main(){
 	sprintf(file1,"./Messdaten/WOLFF_Werte_L_%d_beta_%.3f_sweeps_%d_drops_%d.txt",L,beta,sweeps,drop); //schreibe file namen
 
 	outputfile.open(file1,ios::out); //oeffne File
- 	coldStart(); //initialisiere System
+        outputfile<<"# Mag \t Suszeptibilitaet \t Korrelationslaenge \t x\n";
+ 	hotStart(); //initialisiere System
 	findeNachbarn();// findet Indizes der benachbarten Spins
 	cout<<"clusterWahrscheinlichkeit: "<<clusterWahrscheinlichkeit<<"\n";
         
@@ -64,7 +72,8 @@ int main(){
 // 	cout<<"done\n";
 //         printSpins();
 // 	//WOLFF-ALGORITHMUS
-        cout<<"thermlisieren ... ";
+        cout<<"thermalisieren ...";
+        cout<<" ";
 	thermalisierenWOLFF(drop); //thermalisieren System mit drop flips
         cout<<"done\n";
         cout<<"starte Wolffalgorithmus ... ";

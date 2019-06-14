@@ -36,15 +36,19 @@ int main(){
         lsqred=L*L;
         ifstream datei(file1); // Messdaten aus Metropolisalgorithmus
         string zeile;
-        int counter=0;
+//         int counter=0;
         // lesen Daten aus Wertetabelle ein
         while(getline(datei,zeile)){
+            if(zeile[0]=='#'){
+//                 counter++;
+                continue;
+            }
             stringstream zeilenpuffer(zeile);        
             zeilenpuffer>>b;
-            a=b/lsqred;// um mag-werte zu mitteln
+            a=b/lsqred;// um mag-werte zu normieren
             mag2.push_back(a*a);
             mag4.push_back(pow(a,4.));
-            counter++;
+//             counter++;
 	}
 	
 	resultsmm2=binnedjackknife(binGroesse,mag2);
@@ -69,7 +73,7 @@ int main(){
         double zaehler=resutlsmm4[0];
         double nenner=resultsmm2[0]*resultsmm2[0]*3;
 //         cout<<"BINDERKUMULANTE: "<<1.-zaehler/nenner<<"\n";
-        outputfile<<beta<<"\t"<<(double) 1.-zaehler/nenner<<"\t"<<L<<"\n";
+        outputfile<<setprecision(8)<<beta<<"\t"<<(double) 1.-zaehler/nenner<<"\t"<<L<<"\n";
     }
     outputfile.close();
     cout<<"... done\n";
