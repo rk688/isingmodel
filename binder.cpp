@@ -23,10 +23,12 @@ int main(){
     outputfile.open(file2,ios::out); //oeffne File
     outputfile<<"# beta // kumulante U  // L\n"; // schreibe groessen an den anfang des files
     
-    double a,b; // dumyvariable zum einlesen der Werte
+    double a,mm2=0,mm=0; // dumyvariable zum einlesen der Werte
+    vector<double> mag;
     vector<double> mag2;
     vector<double> mag4;
     int binGroesse=10;
+    vector<double> resultsmm(2);
     vector<double> resultsmm2(2);
     vector<double> resutlsmm4(2);
          
@@ -36,21 +38,21 @@ int main(){
         lsqred=L*L;
         ifstream datei(file1); // Messdaten aus Metropolisalgorithmus
         string zeile;
-//         int counter=0;
+        int counter=0;
         // lesen Daten aus Wertetabelle ein
         while(getline(datei,zeile)){
             if(zeile[0]=='#'){
-//                 counter++;
+                counter++;
                 continue;
             }
             stringstream zeilenpuffer(zeile);        
-            zeilenpuffer>>b;
-            a=b/lsqred;// um mag-werte zu normieren
+            zeilenpuffer>>a;
+            mag.push_back(fabs(a));
             mag2.push_back(a*a);
             mag4.push_back(pow(a,4.));
-//             counter++;
+            counter++;
 	}
-	
+	resultsmm=binnedjackknife(binGroesse,mag);
 	resultsmm2=binnedjackknife(binGroesse,mag2);
         resutlsmm4=binnedjackknife(binGroesse,mag4);
 	
@@ -69,7 +71,7 @@ int main(){
 //             mag4+=sum*sum;
 //         }
     
-    
+        cout<<"Mittlere Suszeptibilitaet: "<<beta*(resultsmm2[0]-pow(resultsmm[0],2.))<<"\n";
         double zaehler=resutlsmm4[0];
         double nenner=resultsmm2[0]*resultsmm2[0]*3;
 //         cout<<"BINDERKUMULANTE: "<<1.-zaehler/nenner<<"\n";

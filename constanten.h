@@ -40,6 +40,8 @@ ofstream outputfile;
 // CLusterkonstanten
 double clusterWahrscheinlichkeit;
 int clustergroesse=0;
+double sum_sin=0., sum_cos=0.;
+int sum_counter=0;
 
 
 
@@ -57,7 +59,7 @@ double improvedEstimator;
 double mittelImprovedEstimator;
 double kWert;
 double suszeptibilitaet;
-double mittelSuszeptibilitaet;
+double mittelSuszeptibilitaet=0.;
 double korrelationslaenge;
 
 void initialisiereVektoren(int laenge){
