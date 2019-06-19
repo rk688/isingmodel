@@ -28,21 +28,20 @@ int main(){
     vector<double> resultsmm2(2);
     vector<double> resutlsmm4(2);
     
-    int Lchoosen=50;
-    sprintf(file2,"./Messdaten/Magnetisierungswerte_L_%d.txt",Lchoosen);
+    sprintf(file2,"./Messdaten/Binderkumulanten.txt");
     outputfile.open(file2,ios::out); //oeffne File
-//         outputfile<<"# beta // kumulante U  // L\n"; // schreibe groessen an den anfang des files
-    outputfile<<"# beta // Magnetisierungswerte\n";
+    outputfile<<"# beta // kumulante U  // L\n"; // schreibe groessen an den anfang des files
+//     outputfile<<"# beta // Magnetisierungswerte\n";
     
-    for(int i=1;i<=11;i++){
+    for(int i=1;i<=number_of_configurations;i++){
         leseStartfile(i,startfilename);
-        sprintf(file1,"./Messdaten/WOLFF_Werte_L_%d_beta_%.3f_sweeps_%d_drops_%d.txt",Lchoosen,beta,sweeps,drop);
+        sprintf(file1,"./Messdaten/WOLFF_Werte_L_%d_beta_%.3f_sweeps_%d_drops_%d.txt",L,beta,sweeps,drop);
         cout<<file1<<"\t";
         ifstream datei(file1); // Messdaten aus Metropolisalgorithmus
         string zeile;
-        vector<double> mag(sweeps);
-//         vector<double> mag2;
-//         vector<double> mag4;
+//         vector<double> mag(sweeps);
+        vector<double> mag2(sweeps);
+        vector<double> mag4(sweeps);
         int counter=0;
         // lesen Daten aus Wertetabelle ein
         while(getline(datei,zeile)){
@@ -52,15 +51,15 @@ int main(){
             }
             stringstream zeilenpuffer(zeile);        
             zeilenpuffer>>a;
-            mag[counter-1]=fabs(a);
-//             mag2.push_back(a*a);
-//             mag4.push_back(pow(a,4.));
+//             mag[counter-1]=fabs(a);
+            mag2[counter-1]=a*a;
+            mag4[counter-1]=pow(a,4.);
             counter++;
 	}
 	cout<<counter<<"\n";
-	resultsmm=binnedjackknife(binGroesse,mag);
-// 	resultsmm2=binnedjackknife(binGroesse,mag2);
-//         resutlsmm4=binnedjackknife(binGroesse,mag4);
+// 	resultsmm=binnedjackknife(binGroesse,mag);
+	resultsmm2=binnedjackknife(binGroesse,mag2);
+        resutlsmm4=binnedjackknife(binGroesse,mag4);
 	
 //     BINDERKUMULANTE 4. ORDNUNG
 //     nach Formel 4.95 Janke S115
@@ -78,11 +77,11 @@ int main(){
 //         }
     
 //         cout<<"Mittlere Suszeptibilitaet: "<<beta*(resultsmm2[0]-pow(resultsmm[0],2.))<<"\n";
-//         double zaehler=resutlsmm4[0];
-//         double nenner=resultsmm2[0]*resultsmm2[0]*3;
+        double zaehler=resutlsmm4[0];
+        double nenner=resultsmm2[0]*resultsmm2[0]*3;
 //         cout<<"BINDERKUMULANTE: "<<1.-zaehler/nenner<<"\n";
-//         outputfile<<setprecision(8)<<beta<<"\t"<<(double) 1.-zaehler/nenner<<"\t"<<L<<"\n";
-        outputfile<<beta<<"\t"<<resultsmm[0]<<"\n";
+        outputfile<<setprecision(8)<<beta<<"\t"<<(double) 1.-zaehler/nenner<<"\t"<<L<<"\n";
+//         outputfile<<beta<<"\t"<<resultsmm[0]<<"\n";
     }
     outputfile.close();
     cout<<"... done\n";
