@@ -19,25 +19,30 @@ using namespace std;  // otherwise we would always have to write "std::vector" i
 int main(){
     int number_of_configurations = leseStartfile(0,startfilename) -1; // berechne anzahl der configurationen
     cout<<"Anzahl an Konfigurationen : "<<number_of_configurations<<"\n";
-    sprintf(file2,"./Messdaten/Binderkumulanten.txt");
-    outputfile.open(file2,ios::out); //oeffne File
-    outputfile<<"# beta // kumulante U  // L\n"; // schreibe groessen an den anfang des files
+    
     
     double a,mm2=0,mm=0; // dumyvariable zum einlesen der Werte
-    vector<double> mag;
-    vector<double> mag2;
-    vector<double> mag4;
+
     int binGroesse=10;
     vector<double> resultsmm(2);
     vector<double> resultsmm2(2);
     vector<double> resutlsmm4(2);
-         
-    for(int i=1;i<=number_of_configurations;i++){
+    
+    int Lchoosen=50;
+    sprintf(file2,"./Messdaten/Magnetisierungswerte_L_%d.txt",Lchoosen);
+    outputfile.open(file2,ios::out); //oeffne File
+//         outputfile<<"# beta // kumulante U  // L\n"; // schreibe groessen an den anfang des files
+    outputfile<<"# beta // Magnetisierungswerte\n";
+    
+    for(int i=1;i<=11;i++){
         leseStartfile(i,startfilename);
-        sprintf(file1,"./Messdaten/WOLFF_Werte_L_%d_beta_%.3f_sweeps_%d_drops_%d.txt",L,beta,sweeps,drop);
-        lsqred=L*L;
+        sprintf(file1,"./Messdaten/WOLFF_Werte_L_%d_beta_%.3f_sweeps_%d_drops_%d.txt",Lchoosen,beta,sweeps,drop);
+        cout<<file1<<"\t";
         ifstream datei(file1); // Messdaten aus Metropolisalgorithmus
         string zeile;
+        vector<double> mag(sweeps);
+//         vector<double> mag2;
+//         vector<double> mag4;
         int counter=0;
         // lesen Daten aus Wertetabelle ein
         while(getline(datei,zeile)){
@@ -47,14 +52,15 @@ int main(){
             }
             stringstream zeilenpuffer(zeile);        
             zeilenpuffer>>a;
-            mag.push_back(fabs(a));
-            mag2.push_back(a*a);
-            mag4.push_back(pow(a,4.));
+            mag[counter-1]=fabs(a);
+//             mag2.push_back(a*a);
+//             mag4.push_back(pow(a,4.));
             counter++;
 	}
+	cout<<counter<<"\n";
 	resultsmm=binnedjackknife(binGroesse,mag);
-	resultsmm2=binnedjackknife(binGroesse,mag2);
-        resutlsmm4=binnedjackknife(binGroesse,mag4);
+// 	resultsmm2=binnedjackknife(binGroesse,mag2);
+//         resutlsmm4=binnedjackknife(binGroesse,mag4);
 	
 //     BINDERKUMULANTE 4. ORDNUNG
 //     nach Formel 4.95 Janke S115
@@ -71,11 +77,12 @@ int main(){
 //             mag4+=sum*sum;
 //         }
     
-        cout<<"Mittlere Suszeptibilitaet: "<<beta*(resultsmm2[0]-pow(resultsmm[0],2.))<<"\n";
-        double zaehler=resutlsmm4[0];
-        double nenner=resultsmm2[0]*resultsmm2[0]*3;
+//         cout<<"Mittlere Suszeptibilitaet: "<<beta*(resultsmm2[0]-pow(resultsmm[0],2.))<<"\n";
+//         double zaehler=resutlsmm4[0];
+//         double nenner=resultsmm2[0]*resultsmm2[0]*3;
 //         cout<<"BINDERKUMULANTE: "<<1.-zaehler/nenner<<"\n";
-        outputfile<<setprecision(8)<<beta<<"\t"<<(double) 1.-zaehler/nenner<<"\t"<<L<<"\n";
+//         outputfile<<setprecision(8)<<beta<<"\t"<<(double) 1.-zaehler/nenner<<"\t"<<L<<"\n";
+        outputfile<<beta<<"\t"<<resultsmm[0]<<"\n";
     }
     outputfile.close();
     cout<<"... done\n";

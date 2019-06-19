@@ -1,0 +1,2 @@
+#Laenge L // Kopplungskonstante J // Beta // sweeps // drop
+80	1	0.425	30000	10000
