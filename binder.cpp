@@ -24,10 +24,7 @@ int main(){
     outputfile<<"# beta // kumulante U  // L\n"; // schreibe groessen an den anfang des files
     
     double a,mm2=0,mm=0; // dumyvariable zum einlesen der Werte
-    vector<double> mag;
-    vector<double> mag2;
-    vector<double> mag4;
-    int binGroesse=10;
+    int binGroesse=30000;
     vector<double> resultsmm(2);
     vector<double> resultsmm2(2);
     vector<double> resutlsmm4(2);
@@ -36,25 +33,34 @@ int main(){
         leseStartfile(i,startfilename);
         sprintf(file1,"./Messdaten/WOLFF_Werte_L_%d_beta_%.3f_sweeps_%d_drops_%d.txt",L,beta,sweeps,drop);
         lsqred=L*L;
+        vector<double> mag(sweeps);
+        vector<double> mag2(sweeps);
+        vector<double> mag4(sweeps);
         ifstream datei(file1); // Messdaten aus Metropolisalgorithmus
         string zeile;
         int counter=0;
         // lesen Daten aus Wertetabelle ein
         while(getline(datei,zeile)){
             if(zeile[0]=='#'){
-                counter++;
+//                 counter++;
                 continue;
             }
             stringstream zeilenpuffer(zeile);        
             zeilenpuffer>>a;
-            mag.push_back(fabs(a));
-            mag2.push_back(a*a);
-            mag4.push_back(pow(a,4.));
+            mag[counter]=a;
+            mag2[counter]=(a*a);
+            mag4[counter]=pow(a,4.);
             counter++;
 	}
 	resultsmm=binnedjackknife(binGroesse,mag);
 	resultsmm2=binnedjackknife(binGroesse,mag2);
-        resutlsmm4=binnedjackknife(binGroesse,mag4);
+//         resutlsmm4=binnedjackknife(binGroesse,mag4);
+//         for(int i=0;i<sweeps;i++){
+//             resultsmm[0]+=mag[i];
+//             resultsmm2[0]+=mag2[i];
+//         }
+//         resultsmm[0]=resultsmm[0]/sweeps;
+//         resultsmm2[0]=resultsmm2[0]/sweeps;
 	
 //     BINDERKUMULANTE 4. ORDNUNG
 //     nach Formel 4.95 Janke S115
@@ -71,7 +77,7 @@ int main(){
 //             mag4+=sum*sum;
 //         }
     
-        cout<<"Mittlere Suszeptibilitaet: "<<beta*(resultsmm2[0]-pow(resultsmm[0],2.))<<"\n";
+        cout<<"Mittlere Suszeptibilitaet / L : "<<beta*lsqred*(resultsmm2[0]-pow(resultsmm[0],2.))<<" / "<<L<<"\n";
         double zaehler=resutlsmm4[0];
         double nenner=resultsmm2[0]*resultsmm2[0]*3;
 //         cout<<"BINDERKUMULANTE: "<<1.-zaehler/nenner<<"\n";

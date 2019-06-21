@@ -22,6 +22,12 @@
 #include "constanten.h"
 #include "gitter.h"
 
+int mag(){
+    int Magnetisierung=0;
+    for(int i)
+    return result;
+}
+
 double berechneImprovedEstimatorArgument(int position){//berechnen Argument aus improvedEstimator Formel
     double arg=kWert*(position%L);
     return arg; // siehe Formel fuer improvedEstimator
@@ -113,7 +119,7 @@ void wolffSweep(){
 	}
 // 	cout<<counter<<"\t"<<geflippteSpins<<"\n";
 // 	mittelMag=mittelMag/counter;
-        suszeptibilitaet+=geflippteSpins;
+        suszeptibilitaet+=geflippteSpins/counter;
         sum_counter+= counter;
 // 	suszeptibilitaet=beta*geflippteSpins/counter; // formel mit G(0) aus Janke
 //  	mittelSuszeptibilitaet+=suszeptibilitaet;

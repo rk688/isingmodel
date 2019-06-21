@@ -72,12 +72,13 @@ int main(){
 // 	cout<<"done\n";
 //         printSpins();
 // 	//WOLFF-ALGORITHMUS
-        cout<<"thermalisieren ...\n";
+        cout<<"thermalisieren ... ";
 	thermalisierenWOLFF(drop); //thermalisieren System mit drop flips
         cout<<"done\n";
         cout<<"starte Wolffalgorithmus ... \n";
 	wolffAlgorithmus();
-        cout<<"mittelSuszeptibilitaet:\t"<<(double) beta*suszeptibilitaet/sum_counter<<"\n";
+        cout<<sweeps<<" / "<<sum_counter<<"\n";
+        cout<<"mittelSuszeptibilitaet / L:\t"<<(double) beta*suszeptibilitaet/sweeps<<" / "<<L<<"\n";
 	cout<<"done\n\n";
 //         
 //         

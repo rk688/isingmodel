@@ -4,7 +4,7 @@ run: isingmodel.x
 
 all: isingmodel.x autoko.x binder.x makeStartfile.x
 
-binder.x: binder.cpp constanten.h
+binder.x: binder.cpp constanten.h analyse.h
 	g++ binder.cpp -o binder.x;
 
 isingmodel.x: main.cpp *.h
