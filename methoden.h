@@ -145,16 +145,12 @@ void thermalisierenWOLFF_RE(int wiederholungen){ // drop wolffSweeps um system z
     }
 }
 
-<<<<<<< HEAD
 void messung(){
   mag=magnetisierung();
   suszeptibilitaet+=cluster.size();
 //   cout<<cluster.size()<<"\n";
 }
 
-
-=======
->>>>>>> b6864854779c26098c6fb9e579eb69f60f5f3f24
 bool inCluster(int index){
     for(int i=0;i<cluster.size();i++){
         if(cluster[i]==index){
