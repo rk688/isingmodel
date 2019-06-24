@@ -34,20 +34,20 @@ int main(){
 	//const clock_t begin_time = clock(); // Startzeit des Programms
 	//auto start = chrono::steady_clock::now();
         
-	srand(time(NULL));
+    srand(time(NULL));
         
-        rlimit R;                   // aendert max rekursionstiefe
-        getrlimit(RLIMIT_STACK, &R);
-        R.rlim_cur = R.rlim_max;
-        setrlimit(RLIMIT_STACK, &R);
+    rlimit R;                   // aendert max rekursionstiefe
+    getrlimit(RLIMIT_STACK, &R);
+    R.rlim_cur = R.rlim_max;
+    setrlimit(RLIMIT_STACK, &R);
         
-        int number_of_configurations = leseStartfile(0,startfilename) -1; // berechne Anzahl an configurationen
-        cout<<"Anzahl an Konfigurationen : "<<number_of_configurations<<"\n\n";
+    int number_of_configurations = leseStartfile(0,startfilename) -1; // berechne Anzahl an configurationen
+    cout<<"Anzahl an Konfigurationen : "<<number_of_configurations<<"\n\n";
     for(int i=1;i<=number_of_configurations;i++){
         cout<<"Lade Konfiguration "<<i<<" / "<<number_of_configurations<<" : ";
 	initialisiereKonstanten(i);
         cout<<"L:"<<L<<" / beta:"<<beta<<" / sweeps:"<<sweeps<<"\n";
-	sprintf(file1,"./Messdaten/WOLFF_Werte_L_%d_beta_%.3f_sweeps_%d_drops_%d.txt",L,beta,sweeps,drop); //schreibe file namen
+	sprintf(file1,"./Messdaten/METRO_Werte_L_%d_beta_%.3f_sweeps_%d_drops_%d.txt",L,beta,sweeps,drop); //schreibe file namen
 
 	outputfile.open(file1,ios::out); //oeffne File
         outputfile<<"# Mag \t Suszeptibilitaet \t Korrelationslaenge \t x\n";
@@ -57,17 +57,17 @@ int main(){
         
 //         printSpins();
 
-// 	//METROPOLIS-ALGORITHMUS
-// 	cout<<"thermlisieren ... ";
-// 	thermalisierenMETRO(drop); //thermalisieren System mit drop flips
-//         
-//         cout<<"done\n";
-// //         printSpins();
-//         cout<<"starte Metropolisalgorithmus ... ";
-//         
-// 	for(int j=0;j<sweeps;j++){ //eigentlicher Metropolisalgorithmus
-//             metropolis();
-// 	}
+	//METROPOLIS-ALGORITHMUS
+	cout<<"thermlisieren ... ";
+	thermalisierenMETRO(drop); //thermalisieren System mit drop flips
+        
+        cout<<"done\n";
+//         printSpins();
+        cout<<"starte Metropolisalgorithmus ... ";
+        
+	for(int j=0;j<sweeps;j++){ //eigentlicher Metropolisalgorithmus
+            metropolis();
+	}
 // 	
 // 	cout<<"done\n";
 //         printSpins();
@@ -77,8 +77,8 @@ int main(){
 //         cout<<"done\n";
 //         cout<<"starte Wolffalgorithmus ... \n";
 // 	wolffAlgorithmus_RE();
-	thermalisieren_IT();
-        wolffAlgorithmus_IT();
+// 	thermalisieren_IT();
+//         wolffAlgorithmus_IT();
 //         cout<<sweeps<<" / "<<sum_counter<<"\n";
 //         cout<<"mittelSuszeptibilitaet / L:\t"<<(double) beta*suszeptibilitaet/sweeps<<" / "<<L<<"\n";
 // 	cout<<"done\n\n";
@@ -88,5 +88,5 @@ int main(){
         cout << beta*suszeptibilitaet/sweeps<<"\n";
 	outputfile.close(); // schliesse File
     }
-        return 0;
+    return 0;
 }

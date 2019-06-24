@@ -24,14 +24,14 @@ int main(){
     outputfile<<"# beta // kumulante U  // L\n"; // schreibe groessen an den anfang des files
     
     double a,mm2=0,mm=0; // dumyvariable zum einlesen der Werte
-    int binGroesse=3000;
+    int binGroesse=10000;
     vector<double> resultsmm(2);
     vector<double> resultsmm2(2);
     vector<double> resutlsmm4(2);
          
     for(int i=1;i<=number_of_configurations;i++){
         leseStartfile(i,startfilename);
-        sprintf(file1,"./Messdaten/WOLFF_Werte_L_%d_beta_%.3f_sweeps_%d_drops_%d.txt",L,beta,sweeps,drop);
+        sprintf(file1,"./Messdaten/METRO_Werte_L_%d_beta_%.3f_sweeps_%d_drops_%d.txt",L,beta,sweeps,drop);
         lsqred=L*L;
         vector<double> mag(sweeps);
         vector<double> mag2(sweeps);
@@ -52,16 +52,16 @@ int main(){
             mag4[counter]=pow(a,4.);
             counter++;
 	}
-// 	resultsmm=binnedjackknife(binGroesse,mag);
-// 	resultsmm2=binnedjackknife(binGroesse,mag2);
+	resultsmm=binnedjackknife(binGroesse,mag);
+	resultsmm2=binnedjackknife(binGroesse,mag2);
 //         resutlsmm4=binnedjackknife(binGroesse,mag4);
-        for(int i=0;i<sweeps;i++){
-            resultsmm[0]+=mag[i];
-            resultsmm2[0]+=mag2[i];
-        }
-        resultsmm[0]=resultsmm[0]/sweeps;
-        resultsmm2[0]=resultsmm2[0]/sweeps;
-	cout<<resultsmm[0]*resultsmm[0]<<"\n";
+//         for(int i=0;i<sweeps;i++){
+//             resultsmm[0]+=mag[i];
+//             resultsmm2[0]+=mag2[i];
+//         }
+//         resultsmm[0]=resultsmm[0]/sweeps;
+//         resultsmm2[0]=resultsmm2[0]/sweeps;
+// 	cout<<resultsmm[0]*resultsmm[0]<<"\n";
 //     BINDERKUMULANTE 4. ORDNUNG
 //     nach Formel 4.95 Janke S115
 //     U(beta)=1-<mag^4>/3/<mag^2>^2

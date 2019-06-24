@@ -151,7 +151,6 @@ void messung(){
 //   cout<<cluster.size()<<"\n";
 }
 
-
 bool inCluster(int index){
     for(int i=0;i<cluster.size();i++){
         if(cluster[i]==index){
