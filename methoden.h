@@ -22,9 +22,11 @@
 #include "constanten.h"
 #include "gitter.h"
 
-int mag(){
-    int Magnetisierung=0;
-    for(int i)
+int magnetisierung(){
+    int result=0;
+    for(int i=0;i<lsqred;i++){
+        result+=spins[i];
+    }
     return result;
 }
 
@@ -80,7 +82,7 @@ void hinzufuegen(int r, int vz){
 }
 
 
-void wolffSweep(){
+void wolffSweep_RE(){
 	int geflippteSpins=0;
         int counter=0;
         mittelImprovedEstimator=0;
@@ -127,20 +129,102 @@ void wolffSweep(){
         korrelationslaenge=1/(2*sin(kWert/2))*sqrt(geflippteSpins/mittelImprovedEstimator-1); // Formel Korrelationslaenge 1X COUNTER gekuerzt
 }
 
-void wolffAlgorithmus(){
+void wolffAlgorithmus_RE(){
     for(int i=0;i<sweeps;i++){
 //         cout<<"Sweep: "<<i<<"\n";
-        wolffSweep();
+        wolffSweep_RE();
         outputfile<<setprecision(8)<< (double) mag/lsqred<<"\t"<<suszeptibilitaet<<"\t"<<korrelationslaenge<<"\t"<< (double) korrelationslaenge/L<<"\n";
     }
 }
 
-void thermalisierenWOLFF(int wiederholungen){ // drop wolffSweeps um system zu thermalisieren
+void thermalisierenWOLFF_RE(int wiederholungen){ // drop wolffSweeps um system zu thermalisieren
     for(int i=0;i<wiederholungen;i++){
-        wolffSweep();
+        wolffSweep_RE();
         suszeptibilitaet=0.;
         sum_counter=0;
     }
 }
+
+bool inCluster(int index){
+    for(int i=0;i<cluster.size();i++){
+        if(cluster[i]==index){
+            return true;
+        } 
+    }    
+    return false;
+}
+
+
+void flippe_spins(){
+    for(int i=0;i<cluster.size();i++){
+        int index=cluster[i];
+        spins[index]=-spins[index];
+    }
+}
+
+void baueCluster(){
+    int q=random_number()*lsqred; //zufaelliger Spin wird ausgesucht
+    vector<int> cluster(1,q);
+    vector<int> F_old(1,q);
+    vector<int> nachbarn(4);
+    printVector(cluster);
+    while(!F_old.empty()){
+        printVector(cluster);
+        cout<<"test\n";
+        vector<int> F_new;
+        for(int i=0;i<F_old.size();i++){
+            int index=F_old[i];
+            nachbarn[0]=oben[index];
+            nachbarn[1]=rechts[index];
+            nachbarn[2]=unten[index];
+            nachbarn[3]=links[index];
+            
+            for(int j=0;j<4;j++){
+                if(random_number()<clusterWahrscheinlichkeit && spins[nachbarn[j]]==spins[index] && inCluster(nachbarn[j])){
+                    
+                    cluster.push_back(nachbarn[j]);
+                    F_new.push_back(nachbarn[j]);
+                    
+                }
+            }
+        }
+        F_old = F_new;
+    }
+}
+
+void wolff_IT(){
+    baueCluster();
+    cout<<cluster[0]<<"\n";
+    flippe_spins();
+    cout<<"Clustergr. : "<<cluster.size()<<" // Magnetisierung : "<<magnetisierung()<<"\n";
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 #endif /* METHODEN_H_ */

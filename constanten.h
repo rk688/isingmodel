@@ -51,6 +51,7 @@ vector<int> oben;
 vector<int> unten;
 vector<int> links;
 vector<int> rechts;
+vector<int> cluster;
 
 //Messgroessen
 int mag;

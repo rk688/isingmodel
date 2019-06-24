@@ -72,14 +72,17 @@ int main(){
 // 	cout<<"done\n";
 //         printSpins();
 // 	//WOLFF-ALGORITHMUS
-        cout<<"thermalisieren ... ";
-	thermalisierenWOLFF(drop); //thermalisieren System mit drop flips
-        cout<<"done\n";
-        cout<<"starte Wolffalgorithmus ... \n";
-	wolffAlgorithmus();
-        cout<<sweeps<<" / "<<sum_counter<<"\n";
-        cout<<"mittelSuszeptibilitaet / L:\t"<<(double) beta*suszeptibilitaet/sweeps<<" / "<<L<<"\n";
-	cout<<"done\n\n";
+//         cout<<"thermalisieren ... ";
+// 	thermalisierenWOLFF_RE(drop); //thermalisieren System mit drop flips
+//         cout<<"done\n";
+//         cout<<"starte Wolffalgorithmus ... \n";
+// 	wolffAlgorithmus_RE();
+        printSpins();
+        wolff_IT();
+        printSpins();
+//         cout<<sweeps<<" / "<<sum_counter<<"\n";
+//         cout<<"mittelSuszeptibilitaet / L:\t"<<(double) beta*suszeptibilitaet/sweeps<<" / "<<L<<"\n";
+// 	cout<<"done\n\n";
 //         
 //         
 // 	//printf("Dauer: %f",float( clock () - begin_time )/  std::CLOCKS_PER_SEC);

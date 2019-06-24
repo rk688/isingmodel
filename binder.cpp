@@ -76,12 +76,13 @@ int main(){
 //             mag2+=sum;
 //             mag4+=sum*sum;
 //         }
-    
-        cout<<"Mittlere Suszeptibilitaet / L : "<<beta*lsqred*(resultsmm2[0]-pow(resultsmm[0],2.))<<" / "<<L<<"\n";
+        a=beta*lsqred*(resultsmm2[0]-pow(resultsmm[0],2.));
+        cout<<"Mittlere Suszeptibilitaet / L : "<<a<<" / "<<L<<"\n";
         double zaehler=resutlsmm4[0];
         double nenner=resultsmm2[0]*resultsmm2[0]*3;
 //         cout<<"BINDERKUMULANTE: "<<1.-zaehler/nenner<<"\n";
-        outputfile<<setprecision(8)<<beta<<"\t"<<(double) 1.-zaehler/nenner<<"\t"<<L<<"\n";
+//         outputfile<<setprecision(8)<<beta<<"\t"<<(double) 1.-zaehler/nenner<<"\t"<<L<<"\n";
+        outputfile<<L<<"\t"<<a<<"\n";
     }
     outputfile.close();
     cout<<"... done\n";
