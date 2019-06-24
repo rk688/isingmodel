@@ -1,0 +1,2 @@
+# Mag 	 Suszeptibilitaet 	 Korrelationslaenge 	 x
+0.9753086411

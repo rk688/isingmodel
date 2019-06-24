@@ -51,6 +51,7 @@ vector<int> oben;
 vector<int> unten;
 vector<int> links;
 vector<int> rechts;
+vector<int> cluster;
 
 //Messgroessen
 int mag;
@@ -58,7 +59,7 @@ double mittelMag=0.;
 double improvedEstimator;
 double mittelImprovedEstimator;
 double kWert;
-double suszeptibilitaet;
+double suszeptibilitaet=0;
 double mittelSuszeptibilitaet=0.;
 double korrelationslaenge;
 

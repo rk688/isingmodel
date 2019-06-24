@@ -24,7 +24,7 @@ int main(){
     outputfile<<"# beta // kumulante U  // L\n"; // schreibe groessen an den anfang des files
     
     double a,mm2=0,mm=0; // dumyvariable zum einlesen der Werte
-    int binGroesse=30000;
+    int binGroesse=3000;
     vector<double> resultsmm(2);
     vector<double> resultsmm2(2);
     vector<double> resutlsmm4(2);
@@ -52,16 +52,16 @@ int main(){
             mag4[counter]=pow(a,4.);
             counter++;
 	}
-	resultsmm=binnedjackknife(binGroesse,mag);
-	resultsmm2=binnedjackknife(binGroesse,mag2);
+// 	resultsmm=binnedjackknife(binGroesse,mag);
+// 	resultsmm2=binnedjackknife(binGroesse,mag2);
 //         resutlsmm4=binnedjackknife(binGroesse,mag4);
-//         for(int i=0;i<sweeps;i++){
-//             resultsmm[0]+=mag[i];
-//             resultsmm2[0]+=mag2[i];
-//         }
-//         resultsmm[0]=resultsmm[0]/sweeps;
-//         resultsmm2[0]=resultsmm2[0]/sweeps;
-	
+        for(int i=0;i<sweeps;i++){
+            resultsmm[0]+=mag[i];
+            resultsmm2[0]+=mag2[i];
+        }
+        resultsmm[0]=resultsmm[0]/sweeps;
+        resultsmm2[0]=resultsmm2[0]/sweeps;
+	cout<<resultsmm[0]*resultsmm[0]<<"\n";
 //     BINDERKUMULANTE 4. ORDNUNG
 //     nach Formel 4.95 Janke S115
 //     U(beta)=1-<mag^4>/3/<mag^2>^2
@@ -76,12 +76,13 @@ int main(){
 //             mag2+=sum;
 //             mag4+=sum*sum;
 //         }
-    
-        cout<<"Mittlere Suszeptibilitaet / L : "<<beta*lsqred*(resultsmm2[0]-pow(resultsmm[0],2.))<<" / "<<L<<"\n";
+        a=beta*lsqred*(resultsmm2[0]-pow(resultsmm[0],2.));
+        cout<<"Mittlere Suszeptibilitaet / L : "<<a<<" / "<<L<<"\n";
         double zaehler=resutlsmm4[0];
         double nenner=resultsmm2[0]*resultsmm2[0]*3;
 //         cout<<"BINDERKUMULANTE: "<<1.-zaehler/nenner<<"\n";
-        outputfile<<setprecision(8)<<beta<<"\t"<<(double) 1.-zaehler/nenner<<"\t"<<L<<"\n";
+//         outputfile<<setprecision(8)<<beta<<"\t"<<(double) 1.-zaehler/nenner<<"\t"<<L<<"\n";
+        outputfile<<L<<"\t"<<a<<"\n";
     }
     outputfile.close();
     cout<<"... done\n";
