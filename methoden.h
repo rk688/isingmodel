@@ -226,31 +226,4 @@ void thermalisieren_IT(){
 }
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 #endif /* METHODEN_H_ */

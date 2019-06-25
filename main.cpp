@@ -77,8 +77,9 @@ int main(){
 //         cout<<"done\n";
 //         cout<<"starte Wolffalgorithmus ... \n";
 // 	wolffAlgorithmus_RE();
-// 	thermalisieren_IT();
-//         wolffAlgorithmus_IT();
+
+	thermalisieren_IT();
+        wolffAlgorithmus_IT();
 //         cout<<sweeps<<" / "<<sum_counter<<"\n";
 //         cout<<"mittelSuszeptibilitaet / L:\t"<<(double) beta*suszeptibilitaet/sweeps<<" / "<<L<<"\n";
 // 	cout<<"done\n\n";
