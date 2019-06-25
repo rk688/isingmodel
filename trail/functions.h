@@ -84,7 +84,7 @@ void tryAdd(int i, int j, short spin);
 void growCluster(int i, int j, short spin){
 
     /* flip the spin belonging to the cluster */
-    s[i][j] = -s[i][j];
+    s[i][j] = -1*s[i][j];
     cluster[i][j] = 1;
     clustersize++;
     
@@ -137,8 +137,9 @@ void wolffAlgorithm(){
     for(i = 0; i < BetweenMeasurements; i++){
         /* set clustersize to 0 */
         int size = 0;
+//         cout<<i<<"\n";
         while(size < N*N){
-            
+//             cout<<"size: "<<size<<"\n";
             clustersize = 0;
             resetCluster();
             /* choose random spin and grow the cluster */
@@ -149,7 +150,7 @@ void wolffAlgorithm(){
             int j = random_number() * N;
             
             growCluster(i, j, s[i][j]);
-            size=clustersize;
+            size+=clustersize;
 
         }
         
@@ -168,12 +169,13 @@ double mag(void){
 			
 			/* calculate the moment */
 			sum += s[i][j];
+//                         cout<<sum<<"\n";
 		
 		}
 		
 	}
 	/* return the magnetization per site */
-    cout<<(double)sum/(N*N)<<"\n";
+//     cout<<(double)sum/(N*N)<<"\n";
 	return (double)sum/(N*N);
 
 }
@@ -276,7 +278,7 @@ void measureObservables(void){
     //spinspincorr(); NOTFALL
     // improvedestimator();
     magnet1 = mag();
-    cout<<magnet1<<"\n";
+    outputfile<<magnet1<<"\n";
     // magnet2 = magnet1 * magnet1;
     // magnet4 = magnet2 * magnet2;
     // energy1 = ene();

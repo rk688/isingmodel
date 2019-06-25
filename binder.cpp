@@ -31,7 +31,7 @@ int main(){
          
     for(int i=1;i<=number_of_configurations;i++){
         leseStartfile(i,startfilename);
-        sprintf(file1,"./Messdaten/WOLFF_Werte_L_%d_beta_%.3f_sweeps_%d_drops_%d.txt",L,beta,sweeps,drop);
+        sprintf(file1,"./trail/Messwerte/WOLFF_Werte_L_%d_beta_%.3f_sweeps_%d_drops_%d.txt",L,beta,sweeps,drop);
         lsqred=L*L;
         vector<double> mag(sweeps);
         vector<double> mag2(sweeps);
@@ -61,7 +61,7 @@ int main(){
         }
         resultsmm[0]=resultsmm[0]/sweeps;
         resultsmm2[0]=resultsmm2[0]/sweeps;
-	cout<<resultsmm[0]*resultsmm[0]<<"\n";
+// 	cout<<resultsmm[0]*resultsmm[0]<<"\n";
 //     BINDERKUMULANTE 4. ORDNUNG
 //     nach Formel 4.95 Janke S115
 //     U(beta)=1-<mag^4>/3/<mag^2>^2

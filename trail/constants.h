@@ -1,8 +1,8 @@
 /* defining constants for the isingmodel */
 #define N 16							/* lattice size N*N */
-#define Measurements 30000 			/* number of iterations */
+#define Measurements 50000 			/* number of iterations */
 #define EquilibriumWait 50				/* number of iterations until equilibrium */
-#define BetweenMeasurements 0			/* iterations between measurements */
+#define BetweenMeasurements 50			/* iterations between measurements */
 #define J 1.0 							/* coupling constant */
 #define temp_start 2.0 					/* starting temperature for the sweep */
 #define PI acos(-1.0)

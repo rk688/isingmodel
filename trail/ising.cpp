@@ -44,7 +44,8 @@ int main(){
 	sprintf(file1,"./Messwerte/WOLFF_Werte_L_%d_beta_%.3f_sweeps_%d_drops_%d.txt",N,beta,Measurements,EquilibriumWait); //schreibe file namen
 	outputfile.open(file1,ios::out); //oeffne File
     outputfile<<"# Mag \t Suszeptibilitaet \t Korrelationslaenge \t x\n";
-    initializeClusterprobability(); 
+    initializeClusterprobability();
+    cout<<clusterprobability<<"\n";
     /* initial configuration (cold start) */
 	for(int i=0;i<N;i++){
 		
@@ -56,6 +57,7 @@ int main(){
 	
 	}
     for(int i=0;i<Measurements;i++){
+        if(i%1000==0)cout<<"Meassures: "<<i<<"\n";
         wolffAlgorithm();
         
         measureObservables();
