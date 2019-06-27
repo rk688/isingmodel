@@ -19,11 +19,12 @@
 #include <cmath>
 #include <limits>
 #include <ctime>
+#include <random>
 #include "constanten.h"
 #include "gitter.h"
 
-int magnetisierung(){
-    int result=0;
+double magnetisierung(){
+    double result=0.;
     for(int i=0;i<lsqred;i++){
         result+=spins[i];
     }
@@ -36,11 +37,12 @@ double berechneImprovedEstimatorArgument(int position){//berechnen Argument aus 
 }
 
 void metropolisflip(){
-    int q=random_number()*lsqred; //zufaelliger Spin wird ausgesucht
+//     int q=random_number()*lsqred; //zufaelliger Spin wird ausgesucht
+    int q=uni_int_distr(generator);
     double deltaE=2*J*spins[q]*(spins[links[q]]+spins[rechts[q]]+spins[unten[q]]+spins[oben[q]]); // Eneu-Ealt
     double boltz=exp(-deltaE*beta);
     double w=fmin(1,boltz);
-    if(random_number()<=w){
+    if(uni_real_distr(generator)<=w){
         spins[q]=-spins[q]; // wenn neue zufaellige Nummer kleiner ist als Wahrscheinlickeit w, wird der Spin an der Stelle q geflippt
         //Messgroessenupdates
         mag=mag+2*spins[q]; // update die Magnetisierung nach jedem Spinflip
@@ -64,6 +66,9 @@ void thermalisierenMETRO(int wiederholungen){
 void hinzufuegen(int r, int vz);
 
 void findeCluster(int q, int vz){
+    
+//         spins[q]=-spins[q];
+//         clustergroesse++;
 	hinzufuegen(oben[q],vz);
 	hinzufuegen(rechts[q],vz);
 	hinzufuegen(unten[q],vz);
@@ -71,30 +76,33 @@ void findeCluster(int q, int vz){
 }
 
 void hinzufuegen(int r, int vz){
-	if(spins[r]==vz && random_number()<=clusterWahrscheinlichkeit){ // Akzeptier-Kriterium
+	if(spins[r]==vz){ // Akzeptier-Kriterium
+            if(uni_real_distr(generator)<clusterWahrscheinlichkeit){
 		spins[r]=-spins[r]; //flippen Spin
 		clustergroesse++;
+//                 cluster[r]=1;
                 sum_sin += sin(berechneImprovedEstimatorArgument(r));
                 sum_cos += cos(berechneImprovedEstimatorArgument(r));
 //                 cout<<"aktuelle Clustergroesse"<<clustergroesse<<"\n";
 		findeCluster(r,vz);
+            }
 	}
 }
 
 
-void wolffSweep_RE(){
+void wolffSweep_RE(void){
 	int geflippteSpins=0;
         int counter=0;
         mittelImprovedEstimator=0;
         mittelMag=0;
-	while(geflippteSpins<lsqred){//wiederholung so lange bis im mittel L^2 Spins geflippt wurden
-                clustergroesse=1; // =1 fuer den ersten gewaehlten Spin
+	while(geflippteSpins<L*L){//wiederholung so lange bis im mittel L^2 Spins geflippt wurden
+                clustergroesse=0; // =1 fuer den ersten gewaehlten Spin
                 improvedEstimator=0.; // setzen Variable vor jeder WolffClusterberechnung auf 0
                 sum_sin=0.; // setze sinus und cosinus von improvedEstimator berechnung auf 0
                 sum_cos=0.;
-                int q=random_number()*lsqred; //zufaelliger Spin wird ausgesucht
+                int q=uni_real_distr(generator)*L*L; //zufaelliger Spin wird ausgesucht
 		int vz=spins[q]; //Vorzeichen von zufaelligem Spin
-		spins[q]=-spins[q]; // flippen ersten Spin
+// 		spins[q]=-spins[q]; // flippen ersten Spin
 		findeCluster(q,vz); // bauen restliches Cluster
 //                 cout<<"Clustergroesse: "<<clustergroesse<<"\n";
 		geflippteSpins+=clustergroesse;// berechne Anzahl an geflippten Spins insgesamt
@@ -102,7 +110,8 @@ void wolffSweep_RE(){
                 
                 
 		//MESSGROESSEN
-		mag=mag-2*clustergroesse*vz;// minus weil altes vz verwendet wird
+// 		mag=mag-2*clustergroesse*vz;// minus weil altes vz verwendet wird
+//                 mag=magnetisierung()/lsqred;
 // 		mittelMag+=mag;
                 improvedEstimator=pow(sum_cos,2.)+pow(sum_sin,2.); // quadrieren der sin und cos Summen im ImprovedEstimator
  		mittelImprovedEstimator+=improvedEstimator/clustergroesse;// sin cos Summer wird berechnet in jedem Schritt
@@ -129,16 +138,18 @@ void wolffSweep_RE(){
         korrelationslaenge=1/(2*sin(kWert/2))*sqrt(geflippteSpins/mittelImprovedEstimator-1); // Formel Korrelationslaenge 1X COUNTER gekuerzt
 }
 
-void wolffAlgorithmus_RE(){
+void wolffAlgorithmus_RE(void){
     for(int i=0;i<sweeps;i++){
 //         cout<<"Sweep: "<<i<<"\n";
         wolffSweep_RE();
-        outputfile<<setprecision(8)<< (double) mag/lsqred<<"\t"<<suszeptibilitaet<<"\t"<<korrelationslaenge<<"\t"<< (double) korrelationslaenge/L<<"\n";
+        if(i%50==0){
+            outputfile<<setprecision(8)<<(double) magnetisierung()/L/L<<"\t"<<suszeptibilitaet<<"\t"<<korrelationslaenge<<"\t"<< (double) korrelationslaenge/L<<"\n";
+        }
     }
 }
 
-void thermalisierenWOLFF_RE(int wiederholungen){ // drop wolffSweeps um system zu thermalisieren
-    for(int i=0;i<wiederholungen;i++){
+void thermalisierenWOLFF_RE(){ // drop wolffSweeps um system zu thermalisieren
+    for(int i=0;i<drop;i++){
         wolffSweep_RE();
         suszeptibilitaet=0.;
         sum_counter=0;
@@ -169,7 +180,7 @@ void flippe_spins(){
 }
 
 void baueCluster(){
-    int q=random_number()*lsqred; //zufaelliger Spin wird ausgesucht
+    int q=uni_int_distr(generator); //zufaelliger Spin wird ausgesucht
     cluster.clear();
     cluster.push_back(q);
     vector<int> F_old;
@@ -185,7 +196,7 @@ void baueCluster(){
             nachbarn[3]=links[index];
             
             for(int j=0;j<4;j++){
-                if(random_number()<clusterWahrscheinlichkeit && spins[nachbarn[j]]==spins[index] && !inCluster(nachbarn[j])){
+                if(uni_real_distr(generator)<clusterWahrscheinlichkeit && spins[nachbarn[j]]==spins[index] && !inCluster(nachbarn[j])){
                     
                     cluster.push_back(nachbarn[j]);
                     F_new.push_back(nachbarn[j]);
@@ -195,6 +206,7 @@ void baueCluster(){
         }
         F_old = F_new;
     }
+}
 
 void wolffSweep_IT(){
   int geflippteSpins=0;
@@ -217,7 +229,7 @@ void wolffAlgorithmus_IT(){
     }
 }
 
-void thermalisieren_IT(){
+void thermalisierenWOLFF_IT(){
   for(int i=0;i<drop;i++){
 //         cout<<"Sweep: "<<i<<"\n";
         wolffSweep_IT();

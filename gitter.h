@@ -14,11 +14,11 @@
 #include <ctime>
 #include "constanten.h"
 
-double random_number() {
-  double q; // generates random number between 1 and -1
-  q = (double)rand()/RAND_MAX;
-  return q;
-}
+// double random_number() {
+//   double q; // generates random number between 1 and -1
+//   q = (double)rand()/RAND_MAX;
+//   return q;
+// }
 
 void findeNachbarn(void){
 
@@ -60,7 +60,7 @@ void coldStart(){
 void hotStart(){
 	mag=0; // magnetisierung auf Null setzen, falls noch ein Wert gespeichert ist
 	for(int i=0;i<lsqred;i++){ // zufaellig die spins ausrichten und magnetisierung der zufaelligen Konfiguration mit berechnen
-		if(random_number()<=0.5){
+		if(uni_real_distr(generator)<=0.5){
 			spins[i]=-1;
 			mag--;
 		}

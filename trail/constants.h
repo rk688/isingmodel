@@ -1,6 +1,6 @@
 /* defining constants for the isingmodel */
 #define N 16							/* lattice size N*N */
-#define Measurements 50000 			/* number of iterations */
+#define Measurements 10000 			/* number of iterations */
 #define EquilibriumWait 50				/* number of iterations until equilibrium */
 #define BetweenMeasurements 50			/* iterations between measurements */
 #define J 1.0 							/* coupling constant */

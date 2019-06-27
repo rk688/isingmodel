@@ -31,7 +31,7 @@
 using namespace std;
 
 double random_number() {
-  double q; // generates random number between 1 and -1
+  double q; // generates random number between 0 and 1
   q = (double)rand()/RAND_MAX;
   return q;
 }

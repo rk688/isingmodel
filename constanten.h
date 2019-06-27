@@ -12,6 +12,7 @@
 #include <cmath>
 #include <limits>
 #include <ctime>
+#include <random>
 
 using namespace std;  // otherwise we would always have to write "std::vector" instead of just "vector"
 
@@ -35,7 +36,10 @@ char file2[100];
 const char * startfilename={"./Startparameter.txt"};
 ofstream outputfile;
 
-
+//randomNumber-Generator
+default_random_engine generator;
+uniform_real_distribution<double> uni_real_distr(0.0,1.0);
+uniform_int_distribution<int> uni_int_distr(0,lsqred);
 
 // CLusterkonstanten
 double clusterWahrscheinlichkeit;
@@ -54,7 +58,7 @@ vector<int> rechts;
 vector<int> cluster;
 
 //Messgroessen
-int mag;
+double mag;
 double mittelMag=0.;
 double improvedEstimator;
 double mittelImprovedEstimator;
@@ -69,6 +73,7 @@ void initialisiereVektoren(int laenge){
     vector<int> untenNeu(laenge);
     vector<int> linksNeu(laenge);
     vector<int> rechtsNeu(laenge);
+    vector<int> cluster(laenge);
     
     spins=spinsNeu;
     oben=obenNeu;
