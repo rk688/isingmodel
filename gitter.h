@@ -41,33 +41,38 @@ void printVector(vector<int> &prinVec){
 	}
 }
 
-void printSpins(){
-	int len=spins.size();
-	for(int i=1;i<=len;i++){
-		if(spins[i-1]<0) printf("- ");
-		else printf("+ ");
-		if(i%L==0) printf("\n");
-	}
-}
+// void printSpins(){
+// 	int len=spins.size();
+// 	for(int i=1;i<=len;i++){
+// 		if(spins[i-1]<0) printf("- ");
+// 		else printf("+ ");
+// 		if(i%L==0) printf("\n");
+// 	}
+// }
 
 void coldStart(){
-	for(int i=0;i<lsqred;i++){
-			spins[i]=-1;	//alle spins auf -1 setzen
-		}
+	for(int i=0;i<L;i++){
+            for(int j=0;j<L;j++){
+			spins[i][j]=-1;	//alle spins auf -1 setzen
+            }
+        }
+		
 	mag=-lsqred;
 }
 
 void hotStart(){
 	mag=0; // magnetisierung auf Null setzen, falls noch ein Wert gespeichert ist
-	for(int i=0;i<lsqred;i++){ // zufaellig die spins ausrichten und magnetisierung der zufaelligen Konfiguration mit berechnen
+	for(int i=0;i<L;i++){ // zufaellig die spins ausrichten und magnetisierung der zufaelligen Konfiguration mit berechnen
+            for(int j=0;j<L;j++){
 		if(uni_real_distr(generator)<=0.5){
-			spins[i]=-1;
+			spins[i][j]=-1;
 			mag--;
 		}
 		else{
-			spins[i]=1;
+			spins[i][j]=1;
 			mag++;
 		}
+            }
 	}
 
 }

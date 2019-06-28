@@ -50,7 +50,7 @@ int sum_counter=0;
 
 
 // definieren Vektoren fuer Spin und benachbarte Spins
-vector<int> spins;
+vector<vector<int>> spins;
 vector<int> oben;
 vector<int> unten;
 vector<int> links;
@@ -67,19 +67,20 @@ double suszeptibilitaet=0;
 double mittelSuszeptibilitaet=0.;
 double korrelationslaenge;
 
-void initialisiereVektoren(int laenge){
-    vector<int> spinsNeu(laenge);
-    vector<int> obenNeu(laenge);
-    vector<int> untenNeu(laenge);
-    vector<int> linksNeu(laenge);
-    vector<int> rechtsNeu(laenge);
-    vector<int> cluster(laenge);
+void initialisiereVektoren(){
+    vector<vector<int>> spinsNeu(L,vector<int>(L));
+//     vector<int> obenNeu(laenge);
+//     vector<int> untenNeu(laenge);
+//     vector<int> linksNeu(laenge);
+//     vector<int> rechtsNeu(laenge);
+    vector<int> clusterNeu(lsqred,0);
     
+    cluster=clusterNeu;
     spins=spinsNeu;
-    oben=obenNeu;
-    unten=untenNeu;
-    rechts=rechtsNeu;
-    links=linksNeu;
+//     oben=obenNeu;
+//     unten=untenNeu;
+//     rechts=rechtsNeu;
+//     links=linksNeu;
 }
 
 int leseStartfile(int config,const char* filename){
@@ -111,7 +112,7 @@ void initialisiereKonstanten(int config){
         
         kWert=2*M_PI/L; // k fuer den improvedEstimator,, um Rechenzeit zu sparen
         
-        initialisiereVektoren(lsqred);
+        initialisiereVektoren();
 //         for(int i=0;i<lsqred;i++){
 //             spins.push_back(i);
 //             oben.push_back(i);

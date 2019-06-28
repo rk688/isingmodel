@@ -37,10 +37,10 @@ int main(){
 	//auto start = chrono::steady_clock::now();
 // 	srand(time(NULL));
         
-//         rlimit R;                   // aendert max rekursionstiefe
-//         getrlimit(RLIMIT_STACK, &R);
-//         R.rlim_cur = R.rlim_max;
-//         setrlimit(RLIMIT_STACK, &R);
+        rlimit R;                   // aendert max rekursionstiefe
+        getrlimit(RLIMIT_STACK, &R);
+        R.rlim_cur = R.rlim_max;
+        setrlimit(RLIMIT_STACK, &R);
         
         int number_of_configurations = leseStartfile(0,startfilename) -1; // berechne Anzahl an configurationen
         cout<<"Anzahl an Konfigurationen : "<<number_of_configurations<<"\n\n";
@@ -54,8 +54,10 @@ int main(){
         
 	outputfile.open(file1,ios::out); //oeffne File
         outputfile<<"# Mag \t Suszeptibilitaet \t Korrelationslaenge \t x\n";
+        
  	coldStart(); //initialisiere System
-	findeNachbarn();// findet Indizes der benachbarten Spins
+//         cout<<"test"<<endl;
+// 	findeNachbarn();// findet Indizes der benachbarten Spins
 	cout<<"clusterWahrscheinlichkeit: "<<clusterWahrscheinlichkeit<<"\n";
         
 //         printSpins();

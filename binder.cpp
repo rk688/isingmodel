@@ -31,8 +31,8 @@ int main(){
          
     for(int i=1;i<=number_of_configurations;i++){
         leseStartfile(i,startfilename);
-        sprintf(file1,"./Messdaten/WOLFF_Werte_L_%d_beta_%.3f_sweeps_%d_drops_%d.txt",L,beta,sweeps,drop);
-//         sprintf(file1,"./trail/Messwerte/WOLFF16x16beta0425.txt");
+//         sprintf(file1,"./Messdaten/WOLFF_Werte_L_%d_beta_%.3f_sweeps_%d_drops_%d.txt",L,beta,sweeps,drop);
+        sprintf(file1,"./trail/Messwerte/WOLFF16x16beta0425.txt");
 //         sprintf(file1,"./trail/Messwerte/WOLFF_Werte_L_%d_beta_%.3f_sweeps_%d_drops_%d.txt",L,beta,sweeps,drop);
         cout<<file1<<endl;
         lsqred=L*L;
@@ -49,11 +49,11 @@ int main(){
                 continue;
             }
             stringstream zeilenpuffer(zeile);        
-            zeilenpuffer>>a;
+            zeilenpuffer>>b>>a;
             mag[counter]=a;
             mag2[counter]=(a*a);
             mag4[counter]=pow(a,4.);
-            cout<<setprecision(8)<<counter<<" : "<<a<<endl;
+//             cout<<setprecision(8)<<counter<<" : "<<a<<endl;
             counter++;
 	}
 // 	resultsmm=binnedjackknife(binGroesse,mag);
@@ -63,8 +63,8 @@ int main(){
             resultsmm[0]+=mag[i];
             resultsmm2[0]+=mag2[i];
         }
-        resultsmm[0]=resultsmm[0]/sweeps*50;
-        resultsmm2[0]=resultsmm2[0]/sweeps*50;
+        resultsmm[0]=resultsmm[0]/sweeps;
+        resultsmm2[0]=resultsmm2[0]/sweeps;
 	cout<<resultsmm2[0]<<"\n";
 //     BINDERKUMULANTE 4. ORDNUNG
 //     nach Formel 4.95 Janke S115
