@@ -1,20 +1,20 @@
-run: isingmodel.x
+run: isingmodel.x binder.x
 	./isingmodel.x;
-	./autoko.x;
+	./binder.x;
 
 all: isingmodel.x autoko.x binder.x makeStartfile.x
 
-binder.x: binder.cpp constanten.h
-	g++ binder.cpp -o binder.x;
+binder.x: binder.cpp *.h
+	g++ -std=c++11 binder.cpp -o binder.x;
 
 isingmodel.x: main.cpp *.h
-	g++ main.cpp -o isingmodel.x;
+	g++ -std=c++11 main.cpp -o isingmodel.x;
 
 autoko.x: autoko.cpp
-	g++ autoko.cpp -o autoko.x;
+	g++ -std=c++11 autoko.cpp -o autoko.x;
 
 makeStartfile.x: makeStartfile.cpp constanten.h
-	g++ makeStartfile.cpp -o makeStartfile.x;
+	g++ -std=c++11 makeStartfile.cpp -o makeStartfile.x;
 
 clean:
 	rm *.x;

@@ -22,9 +22,17 @@
 #include "constanten.h"
 #include "gitter.h"
 
-double berechneImprovedEstimator(int position){//berechnen Argument aus improvedEstimator Formel
+double berechneImprovedEstimatorArgument(int position){//berechnen Argument aus improvedEstimator Formel
     double arg=kWert*(position%L);
-    return pow(cos(arg),2.)+pow(sin(arg),2.); // siehe Formel fuer improvedEstimator
+    return arg;
+}
+
+int magnetisierung(){
+    int result=0;
+    for (int i=0;i<lsqred;i++){
+        result+=spins[i];
+    }
+    return result;
 }
 
 void metropolisflip(){
@@ -63,24 +71,28 @@ void findeCluster(int q, int vz){
 }
 
 void hinzufuegen(int r, int vz){
-	if(spins[r]==vz && random_number()<=clusterWahrscheinlichkeit){ // Akzeptier-Kriterium
+	if(spins[r]==vz){ // Akzeptier-Kriterium
+            if(random_number()<clusterWahrscheinlichkeit){
 		spins[r]=-spins[r]; //flippen Spin
 		clustergroesse++;
-                improvedEstimator+=berechneImprovedEstimator(r);
-//                 cout<<"aktuelle Clustergroesse"<<clustergroesse<<"\n";
+                double arg = berechneImprovedEstimatorArgument(r);
+                sum_sin += sin(arg);
+                sum_cos += cos(arg);
 		findeCluster(r,vz);
+            }
 	}
 }
 
 
-void wolffSweep(){
+void wolffSweep_RE(){
 	int geflippteSpins=0;
         int counter=0;
         mittelImprovedEstimator=0;
-        mittelMag=0;
 	while(geflippteSpins<lsqred){//wiederholung so lange bis im mittel L^2 Spins geflippt wurden
                 clustergroesse=1; // =1 fuer den ersten gewaehlten Spin
-                improvedEstimator=0; // setzen Variable vor jeder WolffClusterberechnung auf 0
+                improvedEstimator=0.; // setzen Variable vor jeder WolffClusterberechnung auf 0
+                sum_sin=0.; // setze sinus und cosinus von improvedEstimator berechnung auf 0
+                sum_cos=0.;
                 int q=random_number()*lsqred; //zufaelliger Spin wird ausgesucht
 		int vz=spins[q]; //Vorzeichen von zufaelligem Spin
 		spins[q]=-spins[q]; // flippen ersten Spin
@@ -88,40 +100,110 @@ void wolffSweep(){
 		geflippteSpins+=clustergroesse;// berechne Anzahl an geflippten Spins insgesamt
                 counter++; // Anzahl der Durchlaufe
                 
-                
 		//MESSGROESSEN
 		mag=mag-2*clustergroesse*vz;// minus weil altes vz verwendet wird
-// 		mittelMag+=mag;
- 		mittelImprovedEstimator+=improvedEstimator/clustergroesse;// sin cos Summer wird berechnet in jedem Schritt
-		
-		/*
-		printSpins();
-                cout<<"clustergr.: "<<clustergroesse;
-                if(vz==1){
-                    cout<<" (-)";
-                }
-                else{
-                    cout<<" (+)";
-                }
-                cout<<" // flips insgesamt: "<<counter<<" // Magnetisierung: "<<mag<<"\n\n";*/
+		improvedEstimator=(pow(sum_sin,2.)+pow(sum_cos,2.))/clustergroesse;
 	}
-// 	mittelMag=mittelMag/counter;
- 	suszeptibilitaet=beta*geflippteSpins/counter; // formel mit G(0) aus Janke
-//         mittelImprovedEstimator=mittelImprovedEstimator/counter; // mittelwert fuer G(k)
-        korrelationslaenge=1/(2*sin(kWert/2))*sqrt(geflippteSpins/mittelImprovedEstimator-1); // Formel Korrelationslaenge 1X COUNTER gekuerzt
+//         suszeptibilitaet=(double) geflippteSpins/counter;// nur gemittelte Clustergroesse
+//         suszeptibilitaet=clustergroesse;
+//         suszeptibilitaet=beta*suszeptibilitaet; // richtiger suszept Wert => formel mit G(0) aus Janke
+//         korrelationslaenge=1/(2*sin(kWert/2))*sqrt(geflippteSpins/mittelImprovedEstimator-1); // Formel Korrelationslaenge 1X COUNTER gekuerzt, Formel 10 aus Kim
 }
 
-void wolffAlgorithmus(){
+void wolffAlgorithmus_RE(){
     for(int i=0;i<sweeps;i++){
-        wolffSweep();
-        outputfile<<setprecision(8)<< (double) mag/lsqred<<"\t"<<suszeptibilitaet<<"\t"<<korrelationslaenge<<"\t"<< (double) korrelationslaenge/L<<"\n";
+        wolffSweep_RE();
+        double outputMag=(double)mag/lsqred;
+        outputfile<<setprecision(8)<<(double)outputMag<<"\t"<<pow(outputMag,2.)<<pow(outputMag,4.)<<"\t"<<clustergroesse<<"\t"<<improvedEstimator<<endl;
     }
 }
 
-void thermalisierenWOLFF(int wiederholungen){ // drop wolffSweeps um system zu thermalisieren
-    for(int i=0;i<wiederholungen;i++){
-        wolffSweep();
+void thermalisierenWOLFF_RE(){ // drop wolffSweeps um system zu thermalisieren, Es muessen keine Werte danach wieder auf null gesetzt werden, passiert in WolffSweep automatisch
+    for(int i=0;i<drop;i++){
+        wolffSweep_RE();
     }
 }
+
+
+
+
+
+////// AB HIER ITERATIVER WOLFF ALGORITHMUS ////////
+// void messung(){
+//   mag=magnetisierung();
+//   suszeptibilitaet+=cluster.size();
+// //   cout<<cluster.size()<<"\n";
+// }
+// 
+// bool inCluster(int index){
+//     for(int i=0;i<cluster.size();i++){
+//         if(cluster[i]==index){
+//             return true;
+//         } 
+//     }    
+//     return false;
+// }
+// 
+// 
+// void flippe_spins(){
+//     for(int i=0;i<cluster.size();i++){
+//         int index=cluster[i];
+//         spins[index]=-spins[index];
+//     }
+// }
+// 
+// void baueCluster(){
+//     int q=random_number()*lsqred; //zufaelliger Spin wird ausgesucht
+//     cluster.clear();
+//     cluster.push_back(q);
+//     vector<int> F_old;
+//     F_old.push_back(q);
+//     vector<int> nachbarn(4,0);
+//     while(!F_old.empty()){
+//         vector<int> F_new;
+//         for(int i=0;i<F_old.size();i++){
+//             int index=F_old[i];
+//             nachbarn[0]=oben[index];
+//             nachbarn[1]=rechts[index];
+//             nachbarn[2]=unten[index];
+//             nachbarn[3]=links[index];
+//             
+//             for(int j=0;j<4;j++){
+//                 if(random_number()<clusterWahrscheinlichkeit && spins[nachbarn[j]]==spins[index] && !inCluster(nachbarn[j])){
+//                     
+//                     cluster.push_back(nachbarn[j]);
+//                     F_new.push_back(nachbarn[j]);
+//                     
+//                 }
+//             }
+//         }
+//         F_old = F_new;
+//     }
+// }
+// 
+// void wolffSweep_IT(){
+//   int geflippteSpins=0;
+//   while(geflippteSpins<lsqred){
+//     baueCluster();
+// //     cout<<cluster[0]<<"\n";
+//     flippe_spins();
+//     geflippteSpins+=cluster.size();
+//   }
+// //   cout<<cluster.size()<<"\n";
+// //     cout<<"Clustergr. : "<<cluster.size()<<" // Magnetisierung : "<<magnetisierung()<<"\n";
+// }
+// 
+// void wolffAlgorithmus_IT(){
+//     for(int i=0;i<sweeps;i++){
+//         wolffSweep_IT();
+//         outputfile<<setprecision(8)<< (double) mag/lsqred<<"\t"<<suszeptibilitaet<<"\t"<<korrelationslaenge<<"\t"<< (double) korrelationslaenge/L<<"\n";
+//     }
+// }
+// 
+// void thermalisierenWOLFF(int wiederholungen){ // drop wolffSweeps um system zu thermalisieren
+//     for(int i=0;i<wiederholungen;i++){
+//         wolffSweep_IT();
+//     }
+// }
 
 #endif /* METHODEN_H_ */

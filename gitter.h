@@ -14,10 +14,12 @@
 #include <ctime>
 #include "constanten.h"
 
-double random_number() {
-  double q; // generates random number between 1 and -1
-  q = (double)rand()/RAND_MAX;
-  return q;
+double random_number(){ //random Number generator siehe constanten.h
+//   double q; // generates random number between 1 and -1
+//   q = (double)rand()/RAND_MAX;
+//   return q;
+//     return uni_real_distr(generator);
+    return unif(rng);
 }
 
 void findeNachbarn(void){

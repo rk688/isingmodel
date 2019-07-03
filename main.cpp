@@ -21,6 +21,8 @@
 #include <limits>
 #include <ctime>
 #include <sys/resource.h> // vergroessert rekursionstiefe bei rekursivem programmieren
+#include <random>
+#include <chrono>
 #include "gitter.h"
 #include "constanten.h"
 #include "methoden.h"
@@ -30,11 +32,16 @@ using namespace std;  // otherwise we would always have to write "std::vector" i
 
 
 int main(){
+    
+    // initialize the generator with time-dependent seed
+    uint64_t timeSeed = chrono::high_resolution_clock::now().time_since_epoch().count();
+    seed_seq ss{uint32_t(timeSeed & 0xffffffff), uint32_t(timeSeed>>32)};
+    rng.seed(ss);
+    //Fuer srand Methode
+//     srand(time(NULL));
 
-	//const clock_t begin_time = clock(); // Startzeit des Programms
-	//auto start = chrono::steady_clock::now();
-        
-	srand(time(NULL));
+	const clock_t begin_time = clock(); // Startzeit des Programms
+// 	auto start = chrono::steady_clock::now();
         
         rlimit R;                   // aendert max rekursionstiefe
         getrlimit(RLIMIT_STACK, &R);
@@ -50,12 +57,11 @@ int main(){
 	sprintf(file1,"./Messdaten/WOLFF_Werte_L_%d_beta_%.3f_sweeps_%d_drops_%d.txt",L,beta,sweeps,drop); //schreibe file namen
 
 	outputfile.open(file1,ios::out); //oeffne File
-        outputfile<<"# Mag \t Suszeptibilitaet \t Korrelationslaenge \t x\n";
+        outputfile<<"# Messwerte zu "<<L<<"x"<<L<<" und beta: "<<beta<<" mit "<<sweeps<<" Messwerten"<<endl;
+        outputfile<<"# Norm. Magenetisierung || Mag^2 || Mag^4 || Clustergroesse G(0) || G(k)\n";
  	hotStart(); //initialisiere System
 	findeNachbarn();// findet Indizes der benachbarten Spins
 	cout<<"clusterWahrscheinlichkeit: "<<clusterWahrscheinlichkeit<<"\n";
-        
-//         printSpins();
 
 // 	//METROPOLIS-ALGORITHMUS
 // 	cout<<"thermlisieren ... ";
@@ -70,18 +76,15 @@ int main(){
 // 	}
 // 	
 // 	cout<<"done\n";
-//         printSpins();
+        
 // 	//WOLFF-ALGORITHMUS
-        cout<<"thermalisieren ...";
-        cout<<" ";
-	thermalisierenWOLFF(drop); //thermalisieren System mit drop flips
+        cout<<"thermalisieren ... ";
+	thermalisierenWOLFF_RE(); //thermalisieren System mit drop flips
         cout<<"done\n";
         cout<<"starte Wolffalgorithmus ... ";
-	wolffAlgorithmus();
-	cout<<"done\n\n";
-//         
-//         
-// 	//printf("Dauer: %f",float( clock () - begin_time )/  std::CLOCKS_PER_SEC);
+	wolffAlgorithmus_RE();
+	cout<<"done\n";
+	cout<<"Dauer: "<<(float) (clock()-begin_time)/CLOCKS_PER_SEC<<" sec"<<endl<<endl;
         
 	outputfile.close(); // schliesse File
     }

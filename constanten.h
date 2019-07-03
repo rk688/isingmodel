@@ -12,6 +12,7 @@
 #include <cmath>
 #include <limits>
 #include <ctime>
+#include <random>
 
 using namespace std;  // otherwise we would always have to write "std::vector" instead of just "vector"
 
@@ -35,10 +36,17 @@ char file2[100];
 const char * startfilename={"./Startparameter.txt"};
 ofstream outputfile;
 
-
+//randomNumber-Generator
+// default_random_engine generator;
+// uniform_real_distribution<double> uni_real_distr(0.0,1.0);
+// uniform_int_distribution<int> uni_int_distr(0,lsqred);
+// Choose Mersenne Twister as random number generator
+std::mt19937_64 rng;
+// initialize a uniform distribution between 0 and 1
+std::uniform_real_distribution<double> unif(0, 1);
 
 // CLusterkonstanten
-double clusterWahrscheinlichkeit;
+double clusterWahrscheinlichkeit=0.;
 int clustergroesse=0;
 
 
@@ -51,14 +59,16 @@ vector<int> links;
 vector<int> rechts;
 
 //Messgroessen
-int mag;
+double mag=0.;
 double mittelMag=0.;
-double improvedEstimator;
-double mittelImprovedEstimator;
-double kWert;
-double suszeptibilitaet;
-double mittelSuszeptibilitaet;
-double korrelationslaenge;
+double improvedEstimator=0.;
+double mittelImprovedEstimator=0.;
+double kWert=0.;
+double suszeptibilitaet=0;
+double mittelSuszeptibilitaet=0.;
+double korrelationslaenge=0.;
+double sum_sin=0.;
+double sum_cos=0.;
 
 void initialisiereVektoren(int laenge){
     vector<int> spinsNeu(laenge);
@@ -75,7 +85,7 @@ void initialisiereVektoren(int laenge){
 }
 
 int leseStartfile(int config,const char* filename){
-    //Einlesen der Werte aus "parameter.txt"
+    //Einlesen der Werte aus "Startparameter.txt"
 	ifstream datei(filename);
 	string zeile;
         int counter=0;
@@ -98,20 +108,9 @@ void initialisiereKonstanten(int config){
 	leseStartfile(config, startfilename);
 
 	lsqred=pow(L,2); // berechne die Laenge der vektoren
-//         beta=1/(k*T);
 	clusterWahrscheinlichkeit=1-exp(-2*J*beta); // berechne die Wahrscheinlichkeit fuer den clusterflip
-        
         kWert=2*M_PI/L; // k fuer den improvedEstimator,, um Rechenzeit zu sparen
-        
         initialisiereVektoren(lsqred);
-//         for(int i=0;i<lsqred;i++){
-//             spins.push_back(i);
-//             oben.push_back(i);
-//             unten.push_back(i);
-//             links.push_back(i);
-//             rechts.push_back(i);
-//         }
-//         cout<<lsqred<<"\n"<<clusterWahrscheinlichkeit<<"\n"<<L<<"\n"<<T<<"\n"<<k<<"\n"<<J<<"\n";
 }
 
 
