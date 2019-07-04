@@ -1,3 +1,0 @@
-# Messwerte zu 16x16 und beta: 0.425 mit 1 Messwerten
-# Norm. Magenetisierung || Suszeptibilitaet || Korrelationslaenge || X
--0.265625	4.98557692307692	inf	inf

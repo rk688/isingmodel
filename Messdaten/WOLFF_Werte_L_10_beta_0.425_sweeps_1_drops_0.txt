@@ -1,3 +1,0 @@
-# Messwerte zu 10x10 und beta: 0.425 mit 1 Messwerten
-# Norm. Magenetisierung || mittlere Clustergroese nach lsqred Durchlaeufen 
--0.84	88	21.71495795	2.171495795

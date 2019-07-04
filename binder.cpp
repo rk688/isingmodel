@@ -67,7 +67,7 @@ int main(){
         resultsMag4=binnedjackknife(binGroesse,mag4);
         resultsClust=binnedjackknife(binGroesse,clust);
         resultsGk=binnedjackknife(binGroesse,Gk);
-        cout<<resultsGk[0]<<endl;
+//         cout<<"Gk: "<<resultsGk[0]<<endl;
 //         for(int i=0;i<counter;i++){
 //             resultsmm[0]+=mag[i];
 //             resultsmm2[0]+=mag2[i];
@@ -82,8 +82,8 @@ int main(){
 //     U(beta)=1-<mag^4>/3/<mag^2>^2
 //         a=beta*lsqred*(resultsmm2[0]-pow(resultsmm[0],2));
         a=1-resultsMag4[0]/3/pow(resultsMag2[0],2.);
-        b=beta*resultsClust[0];
-        c=lsqred*beta*(resultsMag2[0]-pow(resultsMag[0],2.));
+        b=resultsClust[0]/lsqred;
+        c=beta*lsqred*(resultsMag2[0]-pow(resultsMag[0],2.));
         d=1/(2*sin(M_PI/L))*sqrt(resultsClust[0]/resultsGk[0]-1);
         e=d/L;
         outputfile<<L<<"\t"<<beta<<"\t"<<a<<"\t"<<b<<"\t"<<c<<"\t"<<d<<"\t"<<e<<endl;

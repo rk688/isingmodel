@@ -17,14 +17,13 @@ int main(){
     outputfile.open(startfilename,ios::out); //oeffne File
     outputfile<<"#Laenge L // Kopplungskonstante J // Beta // sweeps // drop\n";
     int Ls[]={10,50,100,150,200,250,300,350,400,450,500};
-    double betaStart=0.437, betaEnde=0.447, deltaBeta=0.001;
-    sweeps=40000;
+    double betaStart=0.4401, betaEnde=0.4411, deltaBeta=0.0002;
+    sweeps=50000;
     drop=1000;
     
     int counter=sizeof(Ls)/sizeof(Ls[0]);
-    
+    beta=betaStart;
     for(int i=0;i<counter;i++){
-        beta=betaStart;
         while(beta<=betaEnde){
             outputfile<<Ls[i]<<"\t"<<(double) 1.0<<"\t"<<beta<<"\t"<<sweeps<<"\t"<<drop<<"\n";
             beta+=deltaBeta;
