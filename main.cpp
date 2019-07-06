@@ -51,10 +51,15 @@ int main(){
         int number_of_configurations = leseStartfile(0,startfilename) -1; // berechne Anzahl an configurationen
         cout<<"Anzahl an Konfigurationen : "<<number_of_configurations<<"\n\n";
     for(int i=1;i<=number_of_configurations;i++){
+        //gibt Startuhrzeit jeder konfiguration
+        auto timenow = chrono::system_clock::to_time_t(chrono::system_clock::now());
+        const clock_t start_time = clock();
+        cout << ctime(&timenow);
+        
         cout<<"Lade Konfiguration "<<i<<" / "<<number_of_configurations<<" : ";
 	initialisiereKonstanten(i);
         cout<<"L:"<<L<<" / beta:"<<beta<<" / sweeps:"<<sweeps<<"\n";
-	sprintf(file1,"./Messdaten/WOLFF_Werte_L_%d_beta_%.3f_sweeps_%d_drops_%d.txt",L,beta,sweeps,drop); //schreibe file namen
+	sprintf(file1,"./Messdaten/WOLFF_Werte_L_%d_beta_%.5f_sweeps_%d_drops_%d.txt",L,beta,sweeps,drop); //schreibe file namen
 
 	outputfile.open(file1,ios::out); //oeffne File
         outputfile<<"# Messwerte zu "<<L<<"x"<<L<<" und beta: "<<beta<<" mit "<<sweeps<<" Messwerten"<<endl;
@@ -84,7 +89,12 @@ int main(){
         cout<<"starte Wolffalgorithmus ... ";
 	wolffAlgorithmus_RE();
 	cout<<"done\n";
-	cout<<"Dauer: "<<(float) (clock()-begin_time)/CLOCKS_PER_SEC<<" sec"<<endl<<endl;
+        
+        //DURCHLAUFZEITEN
+        double totaleDauer=(float) (clock()-begin_time)/CLOCKS_PER_SEC;
+        double startDauer=(float) (clock()-start_time)/CLOCKS_PER_SEC;
+	cout<<"gesamte Dauer: \t\t"<<totaleDauer<<" sec"<<" / "<<totaleDauer/60<<" min"<<endl;
+        cout<<"nur fuer Konfiguration: "<<startDauer<<" sec"<<" / "<<startDauer/60<<" min"<<endl<<endl<<endl;
         
 	outputfile.close(); // schliesse File
     }

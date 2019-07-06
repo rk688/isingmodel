@@ -114,7 +114,7 @@ void wolffAlgorithmus_RE(){
     for(int i=0;i<sweeps;i++){
         wolffSweep_RE();
         double outputMag=(double)mag/lsqred;
-        outputfile<<setprecision(8)<<(double)outputMag<<"\t"<<pow(outputMag,2.)<<pow(outputMag,4.)<<"\t"<<clustergroesse<<"\t"<<improvedEstimator<<endl;
+        outputfile<<setprecision(8)<<(double)outputMag<<"\t"<<pow(outputMag,2.)<<"\t"<<pow(outputMag,4.)<<"\t"<<clustergroesse<<"\t"<<improvedEstimator<<endl;
     }
 }
 

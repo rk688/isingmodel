@@ -36,7 +36,7 @@ int main(){
          
     for(int i=1;i<=number_of_configurations;i++){
         leseStartfile(i,startfilename);
-        sprintf(file1,"./Messdaten/WOLFF_Werte_L_%d_beta_%.3f_sweeps_%d_drops_%d.txt",L,beta,sweeps,drop);
+        sprintf(file1,"./Messdaten/WOLFF_Werte_L_%d_beta_%.5f_sweeps_%d_drops_%d.txt",L,beta,sweeps,drop);
         cout<<"Lese FILE: "<<i<<" / "<<number_of_configurations<<endl<<file1<<endl;
         lsqred=L*L;
         vector<double> mag(sweeps);
@@ -86,7 +86,7 @@ int main(){
         c=beta*lsqred*(resultsMag2[0]-pow(resultsMag[0],2.));
         d=1/(2*sin(M_PI/L))*sqrt(resultsClust[0]/resultsGk[0]-1);
         e=d/L;
-        outputfile<<L<<"\t"<<beta<<"\t"<<a<<"\t"<<b<<"\t"<<c<<"\t"<<d<<"\t"<<e<<endl;
+        outputfile<<L<<"\t"<<beta<<"\t"<<a<<endl;//<<"\t"<<b<<"\t"<<c<<"\t"<<d<<"\t"<<e<<endl;
     }
     outputfile.close();
     return 0;
