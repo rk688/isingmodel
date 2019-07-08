@@ -1,7 +1,6 @@
 fullRun: makeStartfile.x
 	./makeStartfile.x;
 	make run;
-	
 
 run: isingmodel.x binder.x
 	./isingmodel.x;
