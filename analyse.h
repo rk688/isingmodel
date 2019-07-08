@@ -14,17 +14,17 @@
 
 using namespace std;  // otherwise we would always have to write "std::vector" instead of just "vector"
 
-vector<double> binnedjackknife(int binGroesse, vector<double> &messwerte){
+vector<double> binnedjackknife(int binGroesse, int counter ,vector<double> &messwerte){
 //     if(sweeps%binGroesse!=0)
     vector<double> result(2);
     
     double mittelWert=0;
     double stdAbweichung=0;
-    int vectorGroesse=sweeps/binGroesse;
+    int vectorGroesse=counter/binGroesse;
     vector<double> binWerte(vectorGroesse,0.0);// erzeugt vektor mit lauer nullen
     vector<double> JKWerte(vectorGroesse,0.0);
     
-    for(int i=0;i<sweeps;i++){
+    for(int i=0;i<counter;i++){
         binWerte[i/binGroesse]+=messwerte[i]/binGroesse;// i/binGroesse ist ein Integer! springt also automatisch weiter
     }
     

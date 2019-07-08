@@ -27,7 +27,7 @@ int main(){
     
 
     double a=0,b=0,c=0,d=0,e=0,mm2=0,mm=0; // dumyvariable zum einlesen der Werte
-    int binGroesse=1000;
+    int binGroesse=10000;
     vector<double> resultsMag(2);
     vector<double> resultsMag2(2);
     vector<double> resultsMag4(2);
@@ -62,19 +62,23 @@ int main(){
             Gk[counter]=e;
             counter++;
 	}
-	resultsMag=binnedjackknife(binGroesse,mag);
-	resultsMag2=binnedjackknife(binGroesse,mag2);
-        resultsMag4=binnedjackknife(binGroesse,mag4);
-        resultsClust=binnedjackknife(binGroesse,clust);
-        resultsGk=binnedjackknife(binGroesse,Gk);
+	cout<<counter<<endl;
+	resultsMag=binnedjackknife(binGroesse,counter,mag);
+	resultsMag2=binnedjackknife(binGroesse,counter,mag2);
+        resultsMag4=binnedjackknife(binGroesse,counter,mag4);
+        resultsClust=binnedjackknife(binGroesse,counter,clust);
+        resultsGk=binnedjackknife(binGroesse,counter,Gk);
 //         cout<<"Gk: "<<resultsGk[0]<<endl;
 //         for(int i=0;i<counter;i++){
-//             resultsmm[0]+=mag[i];
-//             resultsmm2[0]+=mag2[i];
+// //             resultsMag[0]+=mag[i];
+//             resultsMag2[0]+=mag2[i];
+//             resultsClust[0]+=clust[i];
 // //             resutlsSuszep[0]+=suszep[i];
 //         }
-//         resultsmm[0]=resultsmm[0]/counter;
-//         resultsmm2[0]=resultsmm2[0]/counter;
+// //         resultsMag[0]=resultsMag[0]/counter;
+//         resultsClust[0]=resultsClust[0]/counter;
+//         resultsMag2[0]=resultsMag2[0]/counter;
+//         cout<<resultsMag2[0]*lsqred<<endl<<resultsClust[0]<<endl;
 //         resutlsSuszep[0]=resutlsSuszep[0]/counter;
 //         cout<<resultsmm[0]<<endl;
 //     BINDERKUMULANTE 4. ORDNUNG
@@ -82,11 +86,11 @@ int main(){
 //     U(beta)=1-<mag^4>/3/<mag^2>^2
 //         a=beta*lsqred*(resultsmm2[0]-pow(resultsmm[0],2));
         a=1-resultsMag4[0]/3/pow(resultsMag2[0],2.);
-        b=resultsClust[0]/lsqred;
-        c=beta*lsqred*(resultsMag2[0]-pow(resultsMag[0],2.));
+        b=resultsClust[0];
+        c=lsqred*(resultsMag2[0]-pow(resultsMag[0],2.));
         d=1/(2*sin(M_PI/L))*sqrt(resultsClust[0]/resultsGk[0]-1);
         e=d/L;
-        outputfile<<L<<"\t"<<beta<<"\t"<<a<<endl;//<<"\t"<<b<<"\t"<<c<<"\t"<<d<<"\t"<<e<<endl;
+        outputfile<<L<<"\t"<<beta<<"\t"<<a<<"\t"<<b<<"\t"<<c<<"\t"<<d<<"\t"<<e<<endl;
     }
     outputfile.close();
     return 0;

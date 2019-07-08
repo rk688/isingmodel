@@ -27,7 +27,7 @@ double beta; //beta-wert
 
 int sweeps; // Anzahl sweeps, entspricht Anzahl an einzelnen Werten die gemittelt werden
 int drop; // Anzahl an Werten die nicht beruecksichtigt werden, bis System im Equlibrium ist
-
+int zwischenMessungen; // Lassen soviele Messungen aus
 int lsqred; //Anzahl der Spins
 
 
@@ -96,7 +96,7 @@ int leseStartfile(int config,const char* filename){
                 continue;
             }
             stringstream zeilenpuffer(zeile);        
-            zeilenpuffer>>L>>J>>beta>>sweeps>>drop;
+            zeilenpuffer>>L>>J>>beta>>sweeps>>drop>>zwischenMessungen;
             counter++;
 	}
 	return counter;

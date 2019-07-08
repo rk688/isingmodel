@@ -85,24 +85,19 @@ void hinzufuegen(int r, int vz){
 
 
 void wolffSweep_RE(){
-	int geflippteSpins=0;
-        int counter=0;
-        mittelImprovedEstimator=0;
-	while(geflippteSpins<lsqred){//wiederholung so lange bis im mittel L^2 Spins geflippt wurden
-                clustergroesse=1; // =1 fuer den ersten gewaehlten Spin
-                improvedEstimator=0.; // setzen Variable vor jeder WolffClusterberechnung auf 0
-                sum_sin=0.; // setze sinus und cosinus von improvedEstimator berechnung auf 0
-                sum_cos=0.;
-                int q=random_number()*lsqred; //zufaelliger Spin wird ausgesucht
-		int vz=spins[q]; //Vorzeichen von zufaelligem Spin
-		spins[q]=-spins[q]; // flippen ersten Spin
-		findeCluster(q,vz); // bauen restliches Cluster
-		geflippteSpins+=clustergroesse;// berechne Anzahl an geflippten Spins insgesamt
-                counter++; // Anzahl der Durchlaufe
+        for(int i=0;i<zwischenMessungen;i++){
+            clustergroesse=1; // =1 fuer den ersten gewaehlten Spin
+            improvedEstimator=0.; // setzen Variable vor jeder WolffClusterberechnung auf 0
+            sum_sin=0.; // setze sinus und cosinus von improvedEstimator berechnung auf 0
+            sum_cos=0.;
+            int q=random_number()*lsqred; //zufaelliger Spin wird ausgesucht
+            int vz=spins[q]; //Vorzeichen von zufaelligem Spin
+            spins[q]=-spins[q]; // flippen ersten Spin
+            findeCluster(q,vz); // bauen restliches Cluster
                 
-		//MESSGROESSEN
-		mag=mag-2*clustergroesse*vz;// minus weil altes vz verwendet wird
-		improvedEstimator=(pow(sum_sin,2.)+pow(sum_cos,2.))/clustergroesse;
+            //MESSGROESSEN
+            mag=mag-2*clustergroesse*vz;// minus weil altes vz verwendet wird
+            improvedEstimator=(pow(sum_sin,2.)+pow(sum_cos,2.))/clustergroesse;
 	}
 //         suszeptibilitaet=(double) geflippteSpins/counter;// nur gemittelte Clustergroesse
 //         suszeptibilitaet=clustergroesse;
@@ -114,7 +109,7 @@ void wolffAlgorithmus_RE(){
     for(int i=0;i<sweeps;i++){
         wolffSweep_RE();
         double outputMag=(double)mag/lsqred;
-        outputfile<<setprecision(8)<<(double)outputMag<<"\t"<<pow(outputMag,2.)<<"\t"<<pow(outputMag,4.)<<"\t"<<clustergroesse<<"\t"<<improvedEstimator<<endl;
+            outputfile<<setprecision(8)<<(double)outputMag<<"\t"<<pow(outputMag,2.)<<"\t"<<pow(outputMag,4.)<<"\t"<<clustergroesse<<"\t"<<improvedEstimator<<endl;
     }
 }
 
