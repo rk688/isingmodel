@@ -1,4 +1,0 @@
-#Laenge L // Kopplungskonstante J // Beta // sweeps // drop // zwischenMessungen
-450	1	0.44075	50000	10000	10
-450	1	0.4408	50000	10000	10
-450	1	0.44085	50000	10000	10
