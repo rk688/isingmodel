@@ -59,7 +59,7 @@ int main(){
         cout<<"Lade Konfiguration "<<i<<" / "<<number_of_configurations<<" : ";
 	initialisiereKonstanten(i);
         cout<<"L:"<<L<<" / beta:"<<beta<<" / sweeps:"<<sweeps<<"\n";
-	sprintf(file1,"./Messdaten/WOLFF_Werte_L_%d_beta_%.5f_sweeps_%d_drops_%d.txt",L,beta,sweeps,drop); //schreibe file namen
+	sprintf(file1,"./Messdaten/WOLFF_Werte_L_%d_beta_%.6f_sweeps_%d_drops_%d.txt",L,beta,sweeps,drop); //schreibe file namen
 
 	outputfile.open(file1,ios::out); //oeffne File
         outputfile<<"# Messwerte zu "<<L<<"x"<<L<<" und beta: "<<beta<<" mit "<<sweeps<<" Messwerten"<<endl;
