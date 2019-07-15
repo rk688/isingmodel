@@ -16,8 +16,8 @@ using namespace std;  // otherwise we would always have to write "std::vector" i
 int main(){
     outputfile.open(startfilename,ios::out); //oeffne File
     outputfile<<"#Laenge L // Kopplungskonstante J // Beta // sweeps // drop // zwischenMessungen\n";
-    int Ls[]={16,20,25,30,35,40,50,60,70,80,90,100,120,150};//{100,150,200,250,300,350,400,450,500};
-    double betaStart=0.424, betaEnde=0.439, deltaBeta=0.001;
+    int Ls[]={100,150,200,250,300,350,400,450,500};//{16,20,25,30,35,40,50,60,70,80,90,100,120,150};
+    double betaStart=0.440625, betaEnde=0.440625, deltaBeta=0.001;
     sweeps=50000;
     drop=1000;
     zwischenMessungen=10;
