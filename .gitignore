@@ -1,1 +1,2 @@
-./Messdaten
+*.DC_Store
+*.x
