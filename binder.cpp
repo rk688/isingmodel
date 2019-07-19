@@ -36,7 +36,7 @@ int main(){
          
     for(int i=1;i<=number_of_configurations;i++){
         leseStartfile(i,startfilename);
-        sprintf(file1,"./Messdaten/Binderkumulanten_Daten/WOLFF_Werte_L_%d_beta_%.6f_sweeps_%d_drops_%d.txt",L,beta,sweeps,drop);
+        sprintf(file1,"./Messdaten/FSS/WOLFF_Werte_L_%d_beta_%.6f_sweeps_%d_drops_%d.txt",L,beta,sweeps,drop);
         cout<<"Lese FILE: "<<i<<" / "<<number_of_configurations<<endl<<file1<<endl;
         lsqred=L*L;
         vector<double> mag(sweeps);
