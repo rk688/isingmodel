@@ -19,7 +19,7 @@ using namespace std;  // otherwise we would always have to write "std::vector" i
 int main(){
     int number_of_configurations = leseStartfile(0,startfilename) -1; // berechne anzahl der configurationen
     cout<<"Anzahl an Konfigurationen : "<<number_of_configurations<<"\n";
-    sprintf(file2,"./Messdaten/Binderkumulanten.txt");
+    sprintf(file2,"./Messdaten/Messgroessen.txt");
     outputfile.open(file2,ios::out); //oeffne File
     outputfile<<"# Ausgewertete Messdaten aus Wolff-Algorithmus"<<endl;
     outputfile<<"# L || beta || Binderkumulante ||  Suszeptibilitaet mit Clustergroesse || Suszeptibilitaet Magnetisierungswerten || Korrelationslaenge || x"<<endl;

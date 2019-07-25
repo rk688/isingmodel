@@ -2,14 +2,14 @@ fullRun: makeStartfile.x
 	./makeStartfile.x;
 	make run;
 
-run: isingmodel.x binder.x
+run: isingmodel.x messgroessen.x
 	./isingmodel.x;
-	./binder.x;
+	./messgroessen.x;
 
-all: isingmodel.x autoko.x binder.x makeStartfile.x
+all: isingmodel.x autoko.x messgroessen.x makeStartfile.x auswertung.x
 
-binder.x: binder.cpp *.h
-	g++ -std=c++11 binder.cpp -o binder.x;
+messgroessen.x: messgroessen.cpp *.h
+	g++ -std=c++11 messgroessen.cpp -o messgroessen.x;
 
 isingmodel.x: main.cpp *.h
 	g++ -std=c++11 main.cpp -o isingmodel.x;
@@ -19,6 +19,9 @@ autoko.x: autoko.cpp
 
 makeStartfile.x: makeStartfile.cpp constanten.h
 	g++ -std=c++11 makeStartfile.cpp -o makeStartfile.x;
+
+auswertung.x: auswertung.cpp constanten.h analyse.h
+	g++ -std=c++11 auswertung.cpp -o auswertung.x
 
 clean:
 	rm *.x;
