@@ -16,13 +16,9 @@
 
 using namespace std;  // otherwise we would always have to write "std::vector" instead of just "vector"
 
-
-
 // definieren Konstanten
 int L;	// Seitenlaenge des quadratischen Gitters
 double J;	// Kopplungskonstantein Hamiltonian
-// double T;	// Temperatur
-// double k;		// Boltzmannkonstante -> Temperatur wird in Einheiten von k angegeben
 double beta; //beta-wert
 
 int sweeps; // Anzahl sweeps, entspricht Anzahl an einzelnen Werten die gemittelt werden
@@ -30,13 +26,12 @@ int drop; // Anzahl an Werten die nicht beruecksichtigt werden, bis System im Eq
 int zwischenMessungen; // Lassen soviele Messungen aus
 int lsqred; //Anzahl der Spins
 
-
 char file1[100]; // char fuer File-Namen
 char file2[100];
 const char * startfilename={"./Startparameter.txt"};
 ofstream outputfile;
 
-//randomNumber-Generator
+//randomNumber-Generators
 // default_random_engine generator;
 // uniform_real_distribution<double> uni_real_distr(0.0,1.0);
 // uniform_int_distribution<int> uni_int_distr(0,lsqred);
@@ -45,11 +40,9 @@ std::mt19937_64 rng;
 // initialize a uniform distribution between 0 and 1
 std::uniform_real_distribution<double> unif(0, 1);
 
-// CLusterkonstanten
+// Clusterkonstanten
 double clusterWahrscheinlichkeit=0.;
 int clustergroesse=0;
-
-
 
 // definieren Vektoren fuer Spin und benachbarte Spins
 vector<int> spins;
@@ -70,6 +63,8 @@ double korrelationslaenge=0.;
 double sum_sin=0.;
 double sum_cos=0.;
 
+// Brauchen Methode, weil leange erst mit dem Startparameterfile eingelesen wird
+// und die Vektoren aber global definiert sein müssen
 void initialisiereVektoren(int laenge){
     vector<int> spinsNeu(laenge);
     vector<int> obenNeu(laenge);
@@ -85,18 +80,18 @@ void initialisiereVektoren(int laenge){
 }
 
 int leseStartfile(int config,const char* filename){
-    //Einlesen der Werte aus "Startparameter.txt"
+    //Einlesen der Werte aus Datei filename
 	ifstream datei(filename);
 	string zeile;
-        int counter=0;
+    int counter=0; // zum Zählen der Zeilen
         
 	while(getline(datei,zeile)){
-            if(zeile[0]=='#' || counter!=config){ // lasse nur eine bestimmte Configuration einlesen
+            if(zeile[0]=='#' || counter!=config){ // lassen nur eine bestimmte Configuration einlesen
                 counter++;
                 continue;
             }
             stringstream zeilenpuffer(zeile);        
-            zeilenpuffer>>L>>J>>beta>>sweeps>>drop>>zwischenMessungen;
+            zeilenpuffer>>L>>J>>beta>>sweeps>>drop>>zwischenMessungen; // Reihenfolge muss in file stimmen
             counter++;
 	}
 	return counter;
@@ -109,8 +104,8 @@ void initialisiereKonstanten(int config){
 
 	lsqred=pow(L,2); // berechne die Laenge der vektoren
 	clusterWahrscheinlichkeit=1-exp(-2*J*beta); // berechne die Wahrscheinlichkeit fuer den clusterflip
-        kWert=2*M_PI/L; // k fuer den improvedEstimator,, um Rechenzeit zu sparen
-        initialisiereVektoren(lsqred);
+    kWert=2*M_PI/L; // k fuer den improvedEstimator, um Rechenzeit zu sparen
+    initialisiereVektoren(lsqred);
 }
 
 

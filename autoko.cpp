@@ -13,16 +13,18 @@
 using namespace std;  // otherwise we would always have to write "std::vector" instead of just "vector"
 
 int main(){
+        // Wollen hiermit die Autokorrelation aus einer Messreihe berechnen
+
+
     char filename[100];
-    cout<<"Filname eingeben:\t";
+    cout<<"Filname eingeben:\t"; // lassen Filenamen eingeben
     cin>>filename;
-    ifstream datei(filename); // Messdaten aus Metropolisalgorithmus
-    string zeile;
+    ifstream datei(filename); // Messdaten aus dem entsprechenden File
     int counter=0, order=2000;
     double a,mm=0,mm2=0;
     vector<double> x; // vector fuer alle Messwerte
     
-    // zum einfuegen in den Messwertfilenamen
+    // zum einfuegen in den Messwertfilenamen um Outputfile zu schreiben
     string bsp = filename; 
     bsp.insert(12,"AutokoDaten_");    
     const char* outputfilename=bsp.c_str();
@@ -31,8 +33,7 @@ int main(){
     
     
     while(getline(datei,zeile)){
-        if(zeile[0]=='#'){ // in der Datei sollten keine Zeilen it # sein...                
-                counter++;
+        if(zeile[0]=='#'){ // zum ignorieren des Kopfes in der Messdaten-Datei                
                 continue;
         }
         stringstream zeilenpuffer(zeile);        

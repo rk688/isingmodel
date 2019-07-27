@@ -23,7 +23,7 @@ double random_number(){ //random Number generator siehe constanten.h
 }
 
 void findeNachbarn(void){
-
+	// schreibe Indizes der Nachbar-Spins in den jeweiligen Vektor
 	for(int i=0;i<lsqred;i++){
 		oben[i]=(i-L+lsqred)%lsqred;
 		unten[i]=(i+L+lsqred)%lsqred;
@@ -33,7 +33,7 @@ void findeNachbarn(void){
 	links[0]=L-1;
 }
 
-
+// Printe gesamte Einträge eines Vektors
 void printVector(vector<int> &prinVec){
 	int len=prinVec.size();
 	//printf("len: %d\n",len);
@@ -43,6 +43,7 @@ void printVector(vector<int> &prinVec){
 	}
 }
 
+// Printe Spingitter mit + und - Zeichen
 void printSpins(){
 	int len=spins.size();
 	for(int i=1;i<=len;i++){
@@ -52,13 +53,15 @@ void printSpins(){
 	}
 }
 
+// Initzialisiere alle Spins mit -1
 void coldStart(){
 	for(int i=0;i<lsqred;i++){
 			spins[i]=-1;	//alle spins auf -1 setzen
 		}
-	mag=-lsqred;
+	mag=-lsqred; // setze Magentisierung auf richtigen Wert
 }
 
+// Initzialisiere Gitter zufällig
 void hotStart(){
 	mag=0; // magnetisierung auf Null setzen, falls noch ein Wert gespeichert ist
 	for(int i=0;i<lsqred;i++){ // zufaellig die spins ausrichten und magnetisierung der zufaelligen Konfiguration mit berechnen
@@ -73,7 +76,4 @@ void hotStart(){
 	}
 
 }
-
-
-
 #endif

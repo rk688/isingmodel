@@ -1,10 +1,3 @@
-/*
- * methoden.h
- *
- *  Created on: May 8, 2019
- *      Author: rhtkue
- */
-
 #ifndef METHODEN_H_
 #define METHODEN_H_
 
@@ -22,7 +15,8 @@
 #include "constanten.h"
 #include "gitter.h"
 
-double berechneImprovedEstimatorArgument(int position){//berechnen Argument aus improvedEstimator Formel
+//// Messgrößen ////
+double berechneImprovedEstimatorArgument(int position){//berechnen Argument aus improvedEstimator Formel, also x*2PI/L
     double arg=kWert*(position%L);
     return arg;
 }
@@ -35,6 +29,8 @@ int magnetisierung(){
     return result;
 }
 
+
+//// METROPOLIS ////
 void metropolisflip(){
     int q=random_number()*lsqred; //zufaelliger Spin wird ausgesucht
     double deltaE=2*J*spins[q]*(spins[links[q]]+spins[rechts[q]]+spins[unten[q]]+spins[oben[q]]); // Eneu-Ealt
@@ -61,6 +57,7 @@ void thermalisierenMETRO(int wiederholungen){
 }
 
 
+//// REKURSIVER WOLFF-ALGORITHMUS ////
 void hinzufuegen(int r, int vz);
 
 void findeCluster(int q, int vz){
@@ -75,14 +72,13 @@ void hinzufuegen(int r, int vz){
             if(random_number()<clusterWahrscheinlichkeit){
 		spins[r]=-spins[r]; //flippen Spin
 		clustergroesse++;
-                double arg = berechneImprovedEstimatorArgument(r);
-                sum_sin += sin(arg);
+                double arg = berechneImprovedEstimatorArgument(r); // bestimme Argument in den trigonometrischen Funktionen
+                sum_sin += sin(arg); // Sammelvariablen für die Summen
                 sum_cos += cos(arg);
 		findeCluster(r,vz);
             }
 	}
 }
-
 
 void wolffSweep_RE(){
         for(int i=0;i<zwischenMessungen;i++){
@@ -99,17 +95,13 @@ void wolffSweep_RE(){
             mag=mag-2*clustergroesse*vz;// minus weil altes vz verwendet wird
             improvedEstimator=(pow(sum_sin,2.)+pow(sum_cos,2.))/clustergroesse;
 	}
-//         suszeptibilitaet=(double) geflippteSpins/counter;// nur gemittelte Clustergroesse
-//         suszeptibilitaet=clustergroesse;
-//         suszeptibilitaet=beta*suszeptibilitaet; // richtiger suszept Wert => formel mit G(0) aus Janke
-//         korrelationslaenge=1/(2*sin(kWert/2))*sqrt(geflippteSpins/mittelImprovedEstimator-1); // Formel Korrelationslaenge 1X COUNTER gekuerzt, Formel 10 aus Kim
 }
 
 void wolffAlgorithmus_RE(){
     for(int i=0;i<sweeps;i++){
         wolffSweep_RE();
-        double outputMag=(double)mag/lsqred;
-            outputfile<<setprecision(8)<<(double)outputMag<<"\t"<<pow(outputMag,2.)<<"\t"<<pow(outputMag,4.)<<"\t"<<clustergroesse<<"\t"<<improvedEstimator<<endl;
+        double outputMag=(double)mag/lsqred; //Normiere Magnetisierung
+        outputfile<<setprecision(8)<<(double)outputMag<<"\t"<<pow(outputMag,2.)<<"\t"<<pow(outputMag,4.)<<"\t"<<clustergroesse<<"\t"<<improvedEstimator<<endl;
     }
 }
 
@@ -118,9 +110,6 @@ void thermalisierenWOLFF_RE(){ // drop wolffSweeps um system zu thermalisieren, 
         wolffSweep_RE();
     }
 }
-
-
-
 
 
 ////// AB HIER ITERATIVER WOLFF ALGORITHMUS ////////
@@ -200,5 +189,4 @@ void thermalisierenWOLFF_RE(){ // drop wolffSweeps um system zu thermalisieren, 
 //         wolffSweep_IT();
 //     }
 // }
-
 #endif /* METHODEN_H_ */
